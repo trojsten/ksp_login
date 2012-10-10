@@ -12,9 +12,8 @@ def get_login_providers(request, short=False):
     """
     Returns a list of available login providers based on the
     AUTHENTICATION_BACKENDS setting. Each provider is represented as a
-    dictionary containing the social_auth Auth class, display name and a
-    list of account associations to the provider for the currently logged
-    in user.
+    dictionary containing the backend name, name of required parameter if
+    required and its verbose name.
     """
     def extract_backend_data(name, klass):
         """
@@ -26,7 +25,6 @@ def get_login_providers(request, short=False):
             'name': name,
             'required_field': klass.AUTH_BACKEND.REQUIRED_FIELD_NAME,
             'required_field_verbose': klass.AUTH_BACKEND.REQUIRED_FIELD_VERBOSE_NAME,
-            'associations': [],
         }
 
     providers = [extract_backend_data(name, auth)
@@ -34,21 +32,7 @@ def get_login_providers(request, short=False):
     if short:
         return providers[:setting('AUTHENTICATION_PROVIDERS_BRIEF',
                                   DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF)]
-    associations = (request.user.is_authenticated() and
-                    UserSocialAuth.get_social_auth_for_user(request.user) or
-                    [])
-    for assoc in associations:
-        for provider in providers:
-            if provider['name'] == assoc.provider:
-                provider['associations'].append(assoc)
-                break
-
-    # Finally we reorder the list to put those with associations to the
-    # beginning.
-    return ([provider for provider in providers if
-             len(provider['associations']) > 0] +
-            [provider for provider in providers if
-             len(provider['associations']) == 0])
+    return providers
 
 
 def login_providers(request):

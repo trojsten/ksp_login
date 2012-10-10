@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from social_auth.models import UserSocialAuth
 from ksp_login.context_processors import login_providers
 
 def login(request):
@@ -15,8 +16,9 @@ def login(request):
 
 @login_required
 def info(request):
-    return render(request, 'ksp_login/info.html',
-                  login_providers(request))
+    context = login_providers(request)
+    context['account_associations'] = UserSocialAuth.get_social_auth_for_user(request.user)
+    return render(request, 'ksp_login/info.html', context)
 
 def logout(request):
     auth_logout(request)
