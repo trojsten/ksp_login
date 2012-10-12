@@ -3,7 +3,5 @@
   some things (base template etc) into settings
 - make the views and templates AJAX-friendly
 - user merging
-- add checks for an existing password before disconnecting the last social
-  account
 - implement a password reset facility
 - use namespaced names for URL patterns

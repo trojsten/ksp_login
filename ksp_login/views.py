@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login as auth_login
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
+from social_auth.views import disconnect as social_auth_disconnect
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import KspUserCreationForm
 
@@ -68,3 +69,18 @@ def register(request):
     return render(request, "ksp_login/registration.html", {
         'form': form,
     })
+
+
+@login_required
+def disconnect(request, backend, association_id):
+    """
+    If the user has at least one other social account association or a
+    valid password, disconnects the given social account, otherwise asks
+    the user to set up a password before proceeding.
+    """
+    associations = UserSocialAuth.get_social_auth_for_user(request.user)
+    has_assoc = associations.exclude(id=association_id).count()
+    has_pass = request.user.has_usable_password()
+    if has_assoc or has_pass:
+        return social_auth_disconnect(request, backend, association_id)
+    return render(request, 'ksp_login/invalid_disconnect.html')
