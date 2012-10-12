@@ -6,3 +6,4 @@
 - add checks for an existing password before disconnecting the last social
   account
 - implement a password reset facility
+- use namespaced names for URL patterns
