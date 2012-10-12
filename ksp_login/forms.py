@@ -1,4 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import (UserCreationForm,
+    PasswordChangeForm as AuthPasswordChangeForm)
 from django.utils.translation import string_concat, ugettext_lazy as _
 
 
@@ -46,6 +47,48 @@ class KspUserCreationForm(UserCreationForm):
         """
         user = super(KspUserCreationForm, self).save(commit=False)
         if not (self.cleaned_data.get('password1') or
+                self.password_required):
+            user.set_unusable_password()
+        if commit:
+            user.save()
+        return user
+
+
+class PasswordChangeForm(AuthPasswordChangeForm):
+    """
+    A form that lets a user change or optionally remove their password
+    after entering their current password.
+    """
+    def __init__(self, password_required=True, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+        self.password_required = password_required
+
+        if not password_required:
+            self.fields['new_password1'].required = False
+            self.fields['new_password2'].required = False
+            self.fields['new_password1'].help_text = _(
+                "Leave this field empty to disable password-based access "
+                "to your account."
+            )
+
+    def clean_new_password2(self):
+        """
+        We need to validate the submitted passwords if they are required
+        or either has been submitted, otherwise the user account will be
+        passwordless.
+        """
+        if (self.password_required or self.cleaned_data.get('new_password1') or
+                self.cleaned_data.get('new_password2')):
+            return super(PasswordChangeForm, self).clean_new_password2()
+        return None
+
+    def save(self, commit=True):
+        """
+        If a password was provided or is required, just delegate to the
+        parent's save, otherwise explicitly set an unusable password.
+        """
+        user = super(PasswordChangeForm, self).save(commit=False)
+        if not (self.cleaned_data.get('new_password1') or
                 self.password_required):
             user.set_unusable_password()
         if commit:

@@ -3,12 +3,14 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import login as auth_login
+from django.contrib.auth.views import (login as auth_login,
+    password_change)
+from django.contrib.auth.forms import SetPasswordForm
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
 from social_auth.views import disconnect as social_auth_disconnect
 from ksp_login.context_processors import login_providers
-from ksp_login.forms import KspUserCreationForm
+from ksp_login.forms import KspUserCreationForm, PasswordChangeForm
 
 
 def login(request):
@@ -84,3 +86,21 @@ def disconnect(request, backend, association_id):
     if has_assoc or has_pass:
         return social_auth_disconnect(request, backend, association_id)
     return render(request, 'ksp_login/invalid_disconnect.html')
+
+
+@login_required
+def password(request):
+    """
+    Sets, changes or removes the currently logged in user's passwords,
+    depending on whether they have any social account associations.
+    """
+    has_assoc = UserSocialAuth.get_social_auth_for_user(request.user).count()
+    if request.user.has_usable_password():
+        def form(*args, **kwargs):
+            return PasswordChangeForm(not has_assoc, *args, **kwargs)
+    else:
+        form = SetPasswordForm
+    return password_change(request,
+                           post_change_redirect=reverse('account_info'),
+                           password_change_form=form,
+                           template_name='ksp_login/password.html')
