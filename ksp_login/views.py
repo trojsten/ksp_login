@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import login as django_login
+from django.contrib.auth.views import login as auth_login
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
 from ksp_login.context_processors import login_providers
@@ -13,8 +13,9 @@ from ksp_login.forms import KspUserCreationForm
 def login(request):
     if request.user.is_authenticated():
         return redirect('account_info')
-    return django_login(request, template_name='ksp_login/login.html',
-                        extra_context=login_providers(request))
+    return auth_login(request, template_name='ksp_login/login.html',
+                      extra_context=login_providers(request))
+
 
 @login_required
 def info(request):
