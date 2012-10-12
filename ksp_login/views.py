@@ -1,6 +1,5 @@
 from collections import OrderedDict
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import redirect
@@ -28,7 +27,7 @@ def info(request):
 
 def logout(request):
     auth_logout(request)
-    return HttpResponseRedirect(reverse('account_info'))
+    return redirect('account_info')
 
 
 def register(request):
