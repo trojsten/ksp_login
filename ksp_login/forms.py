@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import string_concat, ugettext_lazy as _
 
 
 class KspUserCreationForm(UserCreationForm):
@@ -14,14 +14,19 @@ class KspUserCreationForm(UserCreationForm):
         super(KspUserCreationForm, self).__init__(*args, **kwargs)
         self.password_required = password_required
 
+        self.fields['password1'].help_text = _(
+            "We recommend choosing a strong passphrase but we don't "
+            "enforce any ridiculous constraints on your passwords."
+        )
+
         if not password_required:
             self.fields['password1'].required = False
             self.fields['password2'].required = False
-            self.fields['password1'].help_text = _(
+            self.fields['password1'].help_text = string_concat(_(
                 "Since you're logging in using an external provider, "
                 "this field is optional; however, by supplying it, you "
-                "will be able to log in using a password."
-            )
+                "will be able to log in using a password. "
+            ), self.fields['password1'].help_text)
 
     def clean_password2(self):
         """

@@ -6,22 +6,25 @@ from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login as django_login
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import KspUserCreationForm
 
+
 def login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('account_info'))
-    return render(request, 'ksp_login/login.html',
-                  login_providers(request))
+        return redirect('account_info')
+    return django_login(request, template_name='ksp_login/login.html',
+                        extra_context=login_providers(request))
 
 @login_required
 def info(request):
     context = login_providers(request)
     context['account_associations'] = UserSocialAuth.get_social_auth_for_user(request.user)
     return render(request, 'ksp_login/info.html', context)
+
 
 def logout(request):
     auth_logout(request)
@@ -32,9 +35,10 @@ def register(request):
     """
     As the name suggests, registers a new user.
 
-    Can replace the create_user function in the SOCIAL_AUTH pipeline (with
-    the corresponding save_status_to_session, of course) to make it
-    possible for the user to pick a username.
+    Can replace the create_user function in the SOCIAL_AUTH pipeline
+    (through ksp_login.pipeline.register_user, with the corresponding
+    save_status_to_session, of course) to make it possible for the user to
+    pick a username.
     """
     try:
         pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
