@@ -33,3 +33,16 @@ class KspUserCreationForm(UserCreationForm):
             self.cleaned_data.get('password2')):
             return super(KspUserCreationForm, self).clean_password2()
         return None
+
+    def save(self, commit=True):
+        """
+        If a password was provided or is required, just delegate to the
+        parent's save, otherwise explicitly set an unusable password.
+        """
+        user = super(KspUserCreationForm, self).save(commit=False)
+        if not (self.cleaned_data.get('password1') or
+                self.password_required):
+            user.set_unusable_password()
+        if commit:
+            user.save()
+        return user
