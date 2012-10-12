@@ -40,6 +40,7 @@ class MyOpenIdBackend(OpenIDBackend):
     REQUIRED_FIELD_NAME = 'myopenid_username'
     REQUIRED_FIELD_VERBOSE_NAME = _('MyOpenID username')
 
+
 class MyOpenIdAuth(UsernameBasedOpenIdAuth):
     AUTH_BACKEND = MyOpenIdBackend
 

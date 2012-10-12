@@ -35,7 +35,7 @@ class KspUserCreationForm(UserCreationForm):
         passwordless.
         """
         if (self.password_required or self.cleaned_data.get('password1') or
-            self.cleaned_data.get('password2')):
+                self.cleaned_data.get('password2')):
             return super(KspUserCreationForm, self).clean_password2()
         return None
 

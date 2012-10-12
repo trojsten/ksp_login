@@ -43,7 +43,7 @@ def register(request):
                                                  'partial_pipeline')]
         backend = pipeline_state['backend']
         pipeline_state = pipeline_state['kwargs']
-        standalone = False;
+        standalone = False
     except KeyError:
         standalone = True
     if request.method == "POST":
