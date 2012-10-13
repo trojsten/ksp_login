@@ -5,3 +5,4 @@
 - user merging
 - implement a password reset facility
 - use namespaced names for URL patterns
+- gather all required forms in user settings / registration
