@@ -1,6 +1,11 @@
 from django.contrib.auth.forms import (UserCreationForm,
     PasswordChangeForm as AuthPasswordChangeForm)
+from django.contrib.auth.models import User
+from django.forms.models import ModelForm
 from django.utils.translation import string_concat, ugettext_lazy as _
+from social_auth.utils import setting
+
+from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 
 
 class KspUserCreationForm(UserCreationForm):
@@ -11,16 +16,31 @@ class KspUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         fields = ('username', 'first_name', 'last_name', 'email')
 
-    def __init__(self, password_required=True, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        try:
+            request = kwargs['request']
+            del kwargs['request']
+        except KeyError:
+            raise TypeError("Argument 'request' missing.")
+        try:
+            pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
+                                                     SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
+            pipeline_state = pipeline_state['kwargs']
+            self.password_required = False
+        except KeyError:
+            self.password_required = True
+            pipeline_state = None
+        if not args and 'initial' not in kwargs:
+            kwargs['initial'] = self.get_initial_from_pipeline(pipeline_state)
+
         super(KspUserCreationForm, self).__init__(*args, **kwargs)
-        self.password_required = password_required
 
         self.fields['password1'].help_text = _(
             "We recommend choosing a strong passphrase but we don't "
             "enforce any ridiculous constraints on your passwords."
         )
 
-        if not password_required:
+        if not self.password_required:
             self.fields['password1'].required = False
             self.fields['password2'].required = False
             self.fields['password1'].help_text = string_concat(_(
@@ -28,6 +48,18 @@ class KspUserCreationForm(UserCreationForm):
                 "this field is optional; however, by supplying it, you "
                 "will be able to log in using a password. "
             ), self.fields['password1'].help_text)
+
+    def get_initial_from_pipeline(self, pipeline_state):
+        """
+        Returns a dictionary with initial field values extracted from the
+        social_auth pipeline state.
+        """
+        return None if not pipeline_state else {
+            'username': pipeline_state['username'],
+            'first_name': pipeline_state['details']['first_name'],
+            'last_name': pipeline_state['details']['last_name'],
+            'email': pipeline_state['details']['email'],
+        }
 
     def clean_password2(self):
         """

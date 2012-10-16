@@ -2,6 +2,9 @@ from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _
 
 
+SOCIAL_AUTH_PARTIAL_PIPELINE_KEY = 'partial_pipeline'
+
+
 def __activate_social_auth_monkeypatch():
     from social_auth.backends import (OPENID_ID_FIELD, SocialAuthBackend,
         OpenIDBackend)

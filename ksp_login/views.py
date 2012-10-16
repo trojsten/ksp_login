@@ -9,6 +9,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
 from social_auth.views import disconnect as social_auth_disconnect
+from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import KspUserCreationForm, PasswordChangeForm
 
@@ -32,7 +33,7 @@ def logout(request):
     return redirect('account_info')
 
 
-def register(request):
+def register(request, creation_form=KspUserCreationForm):
     """
     As the name suggests, registers a new user.
 
@@ -43,30 +44,24 @@ def register(request):
     """
     try:
         pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
-                                                 'partial_pipeline')]
+                                                 SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
         backend = pipeline_state['backend']
         pipeline_state = pipeline_state['kwargs']
         standalone = False
     except KeyError:
         standalone = True
     if request.method == "POST":
-        form = KspUserCreationForm(standalone, request.POST)
+        form = creation_form(request.POST, request=request)
         if form.is_valid():
             user = form.save()
             if standalone:
                 return redirect('account_login')
             pipeline_state['user'] = user
             request.session.modified = True
+            print request.session.items()
             return redirect('socialauth_complete', backend=backend)
     else:
-        initial_data = None if standalone else {
-            'username': pipeline_state['username'],
-            'first_name': pipeline_state['details']['first_name'],
-            'last_name': pipeline_state['details']['last_name'],
-            'email': pipeline_state['details']['email'],
-        }
-        form = KspUserCreationForm(initial=initial_data,
-                                   password_required=standalone)
+        form = creation_form(request=request)
 
     return render(request, "ksp_login/registration.html", {
         'form': form,
