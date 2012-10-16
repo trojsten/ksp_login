@@ -42,6 +42,8 @@ def register(request, creation_form=KspUserCreationForm):
     save_status_to_session, of course) to make it possible for the user to
     pick a username.
     """
+    if request.user.is_authenticated():
+        return redirect('account_info')
     try:
         pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
                                                  SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
