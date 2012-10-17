@@ -1,6 +1,6 @@
 - make the whole package i18n-friendly
-- generalize templates and move them into the package, possibly factor out
-  some things (base template etc) into settings
+- generalize templates, possibly factor out some things (base template
+  etc) into settings
 - make the views and templates AJAX-friendly
 - user merging
 - implement a password reset facility
