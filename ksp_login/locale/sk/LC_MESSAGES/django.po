@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KSP Login\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 14:03+0200\n"
+"POT-Creation-Date: 2012-10-17 15:39+0200\n"
 "PO-Revision-Date: 2012-10-17 10:00+0200\n"
 "Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
 "Language-Team: \n"
@@ -52,16 +52,16 @@ msgid ""
 "Leave this field empty to disable password-based access to your account."
 msgstr "Pokiaľ toto pole necháte prázdne, nebude možné sa prihlásiť heslom."
 
-#: templates/ksp_login/info.html:7 templates/ksp_login/parts/login_box.html:5
+#: templates/ksp_login/info.html:8 templates/ksp_login/parts/login_box.html:5
 msgid "Logged in as"
 msgstr "Prihlásené ako"
 
-#: templates/ksp_login/info.html:12
+#: templates/ksp_login/info.html:13
 msgid "You can use any of the following services to log in to your account."
 msgstr ""
 "Na prihlásenie momentálne môžete použiť ktorúkoľvek z&nbsp;týchto služieb."
 
-#: templates/ksp_login/info.html:16
+#: templates/ksp_login/info.html:17
 msgid ""
 "If you want to associate other services to your account, feel free to pick "
 "any from the list below."
@@ -75,11 +75,6 @@ msgstr ""
 msgid "Log in"
 msgstr "Prihlásiť"
 
-#: templates/ksp_login/password.html:9
-#: templates/ksp_login/registration.html:12
-msgid "Submit"
-msgstr "Odoslať"
-
 #: templates/ksp_login/registration.html:7
 msgid ""
 "Welcome, new user. You only need to give us a few details in order to finish "
@@ -91,3 +86,11 @@ msgstr ""
 #: templates/ksp_login/parts/associated_accounts_list.html:11
 msgid "Disconnect"
 msgstr "Odpojiť"
+
+#: templates/ksp_login/parts/single_form.html:11
+msgid "Submit"
+msgstr "Odoslať"
+
+#: templates/ksp_login/parts/single_form.html:12
+msgid "Cancel"
+msgstr "Zrušiť"
