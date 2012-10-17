@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KSP Login\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 15:39+0200\n"
+"POT-Creation-Date: 2012-10-17 19:45+0200\n"
 "PO-Revision-Date: 2012-10-17 10:00+0200\n"
 "Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
 "Language-Team: \n"
@@ -56,12 +56,24 @@ msgstr "Pokiaľ toto pole necháte prázdne, nebude možné sa prihlásiť heslo
 msgid "Logged in as"
 msgstr "Prihlásené ako"
 
-#: templates/ksp_login/info.html:13
+#: templates/ksp_login/info.html:9
+msgid "Log out"
+msgstr "Odhlásiť"
+
+#: templates/ksp_login/info.html:10
+msgid "Change password"
+msgstr "Zmeniť heslo"
+
+#: templates/ksp_login/info.html:11
+msgid "Settings"
+msgstr "Nastavenia"
+
+#: templates/ksp_login/info.html:14
 msgid "You can use any of the following services to log in to your account."
 msgstr ""
 "Na prihlásenie momentálne môžete použiť ktorúkoľvek z&nbsp;týchto služieb."
 
-#: templates/ksp_login/info.html:17
+#: templates/ksp_login/info.html:18
 msgid ""
 "If you want to associate other services to your account, feel free to pick "
 "any from the list below."
