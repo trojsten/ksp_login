@@ -11,7 +11,8 @@ from social_auth.utils import setting
 from social_auth.views import disconnect as social_auth_disconnect
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
-from ksp_login.forms import KspUserCreationForm, PasswordChangeForm
+from ksp_login.forms import (KspUserCreationForm, PasswordChangeForm,
+    UserProfileForm)
 
 
 def login(request):
@@ -101,3 +102,22 @@ def password(request):
                            post_change_redirect=reverse('account_info'),
                            password_change_form=form,
                            template_name='ksp_login/password.html')
+
+
+@login_required
+def settings(request, settings_form=UserProfileForm):
+    """
+    Presents the user a form with their settings, basically the register
+    form minus username minus password.
+    """
+    if request.method == "POST":
+        form = settings_form(request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('account_info')
+    else:
+        form = settings_form(user=request.user)
+
+    return render(request, 'ksp_login/settings.html', {
+        'form': form,
+    })

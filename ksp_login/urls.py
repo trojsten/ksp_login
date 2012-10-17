@@ -8,6 +8,7 @@ urlpatterns = patterns('ksp_login.views',
     url(r'^disconnect/(?P<backend>[^/]+)/(?P<association_id>[^/]+)/$',
         'disconnect', name='account_disconnect'),
     url(r'^password/$', 'password', name='account_password'),
+    url(r'^settings/$', 'settings', name='account_settings'),
 )
 
 urlpatterns += patterns('',

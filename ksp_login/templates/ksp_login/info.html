@@ -6,8 +6,9 @@
 {% block content %}
     <p>
         {% trans "Logged in as" %} {{ user.username }}.
-        <a href="{% url "account_logout" %}">Odhlásiť</a>
-        <a href="{% url "account_password" %}">Zmeniť heslo</a>
+        <a href="{% url "account_logout" %}">{% trans "Log out" %}</a>
+        <a href="{% url "account_password" %}">{% trans "Change password" %}</a>
+        <a href="{% url "account_settings" %}">{% trans "Settings" %}</a>
     </p>
     <p>
         {% trans "You can use any of the following services to log in to your account." %}

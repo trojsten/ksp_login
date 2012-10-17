@@ -86,6 +86,22 @@ class KspUserCreationForm(UserCreationForm):
         return user
 
 
+class UserProfileForm(ModelForm):
+    """
+    A simple form that allows an existing user to change their e-mail and
+    name.
+    """
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        if user:
+            kwargs['instance'] = user
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+
+
 class PasswordChangeForm(AuthPasswordChangeForm):
     """
     A form that lets a user change or optionally remove their password
