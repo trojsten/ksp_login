@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block content %}
+    <p>
+        Momentálne nie si prihlásené. Vyber si niektorú z&nbsp;možností.
+    </p>
+
+    {% include "ksp_login/parts/backend_list.html" %}
+
+    <p>
+        Alternatívne sa môžeš prihlásiť pomocou prezývky a&nbsp;hesla. Ak
+        ešte nemáš konto, môžeš sa <a href="{% url "account_register" %}">zaregistrovať</a>.
+        Odporúčame však využiť niektorú z&nbsp;vyššie uvedených možností.
+    </p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{% trans "Log in" %}" />
+    </form>
+{% endblock content %}

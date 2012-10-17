@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+
+{% block content %}
+    <p>
+        Pred tým, ako odstrániš asociáciu na posledné externé konto, si
+        <a href="{% url "account_password" %}">nastav heslo</a>, inak sa
+        nebudeš môcť opäť prihlásiť.
+    </p>
+{% endblock content %}

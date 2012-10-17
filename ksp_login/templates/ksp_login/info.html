@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+
+{% block content %}
+    <p>
+        Prihlásené ako {{ user.username }}.
+        <a href="{% url "account_logout" %}">Odhlásiť</a>
+        <a href="{% url "account_password" %}">Zmeniť heslo</a>
+    </p>
+    <p>
+        Momentálne sa vieš k&nbsp;tomuto liahňovému kontu prihlásiť cez
+        nasledovné kontá:
+    </p>
+    {% include "ksp_login/parts/associated_accounts_list.html" %}
+    <p>
+        Pokiaľ sa chceš k&nbsp;tomuto liahňovému kontu vedieť dostať aj
+        cez iné služby, pripoj si ich podľa uváženia z&nbsp;nasledujúceho
+        zoznamu.
+    </p>
+    {% include "ksp_login/parts/backend_list.html" %}
+{% endblock content %}

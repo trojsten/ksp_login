@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <p>
+        Vitaj, nový užívateľ. Už Ti stačí vyplniť iba zopár údajov
+        a&nbsp;čoskoro budeš môcť spraviť svoj prvý submit.
+    </p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{% trans "Submit" %}" />
+    </form>
+{% endblock content %}

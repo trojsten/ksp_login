@@ -1,0 +1,15 @@
+{% load url from future %}
+{% load i18n %}
+
+<ul>
+    {% for association in account_associations %}
+        <li>
+            <span>{{ association.provider }}</span>
+            <span>{{ association.uid }}</span>
+            <form action="{% url "socialauth_disconnect_individual" association.provider association.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="{% trans "Disconnect" %}" />
+            </form>
+        </li>
+    {% endfor %}
+</ul>
