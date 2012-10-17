@@ -4,6 +4,12 @@
 {% if user.is_authenticated %}
     {% trans "Logged in as" %}
     <a href="{% url "account_info" %}">{{ user.username }}</a>.
+    <div id="account_links">
+        <a href="{% url "account_logout" %}">{% trans "Log out" %}</a><br />
+        <a href="{% url "account_password" %}">{% trans "Change password" %}</a><br />
+        <a href="{% url "account_settings" %}">{% trans "Settings" %}</a>
+    </div>
+    <div style="clear:both"></div>
 {% else %}
     <a href="{% url "account_login" %}">{% trans "Log in" %}</a>
 {% endif %}
