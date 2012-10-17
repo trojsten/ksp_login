@@ -1,0 +1,67 @@
+# Copyright (C) 2012 Michal Petrucha
+# This file is distributed under the same license as the KSP Login package.
+# Michal Petrucha <michal.petrucha@ksp.sk>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: KSP Login\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-17 10:15+0200\n"
+"PO-Revision-Date: 2012-10-17 10:00+0200\n"
+"Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
+"Language-Team: \n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
+
+#: __init__.py:22
+msgid "OpenID identity"
+msgstr "OpenID"
+
+#: __init__.py:25
+msgid "LiveJournal username"
+msgstr "LiveJournal prezývka"
+
+#: backends.py:30
+msgid "Launchpad username"
+msgstr "Launchpad username"
+
+#: backends.py:41
+msgid "MyOpenID username"
+msgstr "MyOpenID username"
+
+#: forms.py:39
+msgid ""
+"We recommend choosing a strong passphrase but we don't enforce any "
+"ridiculous constraints on your passwords."
+msgstr ""
+"Odporúčame zvoliť silné heslo pozostávajúce z&nbsp;vety, ale nebudeme "
+"vynucovať žiadne absurdné obmedzenia."
+
+#: forms.py:47
+msgid ""
+"Since you're logging in using an external provider, this field is optional; "
+"however, by supplying it, you will be able to log in using a password. "
+msgstr ""
+"Keďže s aprihlasujete cez externého poskytovateľa, toto pole nie je povinné; "
+"ak ho vyplníte, budete sa vedieť prihlásiť aj heslom. "
+
+#: forms.py:118
+msgid ""
+"Leave this field empty to disable password-based access to your account."
+msgstr "Pokiaľ toto pole necháte prázdne, nebude možné sa prihlásiť heslom."
+
+#: templates/ksp_login/login.html:21
+#: templates/ksp_login/parts/backend_list.html:14
+msgid "Log in"
+msgstr "Prihlásiť"
+
+#: templates/ksp_login/password.html:9
+#: templates/ksp_login/registration.html:13
+msgid "Submit"
+msgstr "Odoslať"
+
+#: templates/ksp_login/parts/associated_accounts_list.html:10
+msgid "Disconnect"
+msgstr "Odpojiť"
