@@ -1,22 +1,20 @@
 {% extends "base.html" %}
 
 {% load url from future %}
+{% load i18n %}
 
 {% block content %}
     <p>
-        Prihlásené ako {{ user.username }}.
+        {% trans "Logged in as" %} {{ user.username }}.
         <a href="{% url "account_logout" %}">Odhlásiť</a>
         <a href="{% url "account_password" %}">Zmeniť heslo</a>
     </p>
     <p>
-        Momentálne sa vieš k&nbsp;tomuto liahňovému kontu prihlásiť cez
-        nasledovné kontá:
+        {% trans "You can use any of the following services to log in to your account." %}
     </p>
     {% include "ksp_login/parts/associated_accounts_list.html" %}
     <p>
-        Pokiaľ sa chceš k&nbsp;tomuto liahňovému kontu vedieť dostať aj
-        cez iné služby, pripoj si ich podľa uváženia z&nbsp;nasledujúceho
-        zoznamu.
+        {% trans "If you want to associate other services to your account, feel free to pick any from the list below." %}
     </p>
     {% include "ksp_login/parts/backend_list.html" %}
 {% endblock content %}

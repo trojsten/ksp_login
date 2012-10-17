@@ -4,8 +4,7 @@
 
 {% block content %}
     <p>
-        Vitaj, nový užívateľ. Už Ti stačí vyplniť iba zopár údajov
-        a&nbsp;čoskoro budeš môcť spraviť svoj prvý submit.
+        {% trans "Welcome, new user. You only need to give us a few details in order to finish the registration process." %}
     </p>
     <form action="" method="post">
         {% csrf_token %}
