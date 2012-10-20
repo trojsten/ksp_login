@@ -1,3 +1,7 @@
 div#account_links {
     float: right;
 }
+
+.ksp_login_provider_list img, #ksp_login_association_list img {
+    width: 100px;
+}

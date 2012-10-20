@@ -1,10 +1,10 @@
 {% load url from future %}
 {% load i18n %}
 
-<ul>
+<ul class="ksp_login_provider_list">
     {% for provider in login_providers %}
-        <li>
-            {{ provider.name }}:
+        <li class="provider_{% if provider.required_field %}simple{% else %}with_input{% endif %}">
+            <img src="{{ STATIC_URL }}ksp_login/img/{{ provider.name }}.png" alt="{{ provider.name }}" />
             <form action="{% url "socialauth_begin" provider.name %}" method="get">
                 {% csrf_token %}
                 {% if provider.required_field %}

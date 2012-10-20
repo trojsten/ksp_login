@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KSP Login\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 19:45+0200\n"
+"POT-Creation-Date: 2012-10-20 23:29+0200\n"
 "PO-Revision-Date: 2012-10-17 10:00+0200\n"
 "Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
 "Language-Team: \n"
@@ -56,15 +56,16 @@ msgstr "Pokiaľ toto pole necháte prázdne, nebude možné sa prihlásiť heslo
 msgid "Logged in as"
 msgstr "Prihlásené ako"
 
-#: templates/ksp_login/info.html:9
+#: templates/ksp_login/info.html:9 templates/ksp_login/parts/login_box.html:8
 msgid "Log out"
 msgstr "Odhlásiť"
 
-#: templates/ksp_login/info.html:10
+#: templates/ksp_login/info.html:10 templates/ksp_login/parts/login_box.html:9
 msgid "Change password"
 msgstr "Zmeniť heslo"
 
 #: templates/ksp_login/info.html:11
+#: templates/ksp_login/parts/login_box.html:10
 msgid "Settings"
 msgstr "Nastavenia"
 
@@ -83,7 +84,7 @@ msgstr ""
 
 #: templates/ksp_login/login.html:21
 #: templates/ksp_login/parts/backend_list.html:14
-#: templates/ksp_login/parts/login_box.html:8
+#: templates/ksp_login/parts/login_box.html:14
 msgid "Log in"
 msgstr "Prihlásiť"
 
@@ -95,7 +96,19 @@ msgstr ""
 "Vitaj, nový užívateľ. Pre dokončenie registrácie už stačí iba vyplniť "
 "niekoľko údajov."
 
-#: templates/ksp_login/parts/associated_accounts_list.html:11
+#: templates/ksp_login/settings.html:5
+msgid "Account settings"
+msgstr "Nastavenia"
+
+#: templates/ksp_login/parts/associated_accounts_list.html:7
+msgid "Provider"
+msgstr "Poskytovateľ"
+
+#: templates/ksp_login/parts/associated_accounts_list.html:8
+msgid "Account"
+msgstr "Konto"
+
+#: templates/ksp_login/parts/associated_accounts_list.html:24
 msgid "Disconnect"
 msgstr "Odpojiť"
 
