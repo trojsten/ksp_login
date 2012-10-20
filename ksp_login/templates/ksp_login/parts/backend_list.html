@@ -3,7 +3,7 @@
 
 <ul class="ksp_login_provider_list">
     {% for provider in login_providers %}
-        <li class="provider_{% if provider.required_field %}simple{% else %}with_input{% endif %}">
+        <li class="provider_{% if provider.required_field %}with_input{% else %}simple{% endif %}">
             <img src="{{ STATIC_URL }}ksp_login/img/{{ provider.name }}.png" alt="{{ provider.name }}" />
             <form action="{% url "socialauth_begin" provider.name %}" method="get">
                 {% csrf_token %}
