@@ -5,3 +5,7 @@ div#account_links {
 .ksp_login_provider_list img, #ksp_login_association_list img {
     width: 100px;
 }
+
+.ksp_login_provider_list form {
+    display: inline;
+}

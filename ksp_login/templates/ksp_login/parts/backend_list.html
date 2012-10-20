@@ -8,8 +8,9 @@
             <form action="{% url "socialauth_begin" provider.name %}" method="get">
                 {% csrf_token %}
                 {% if provider.required_field %}
-                    <label for="{{ provider.required_field }}">{{ provider.required_field_verbose }}</label>
-                    <input type="text" name="{{ provider.required_field }}" />
+                    <label>{{ provider.required_field_verbose }}
+                        <input type="text" name="{{ provider.required_field }}" />
+                    </label>
                 {% endif %}
                 <input type="submit" value="{% trans "Log in" %}" />
             </form>
