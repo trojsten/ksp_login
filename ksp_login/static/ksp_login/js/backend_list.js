@@ -7,6 +7,16 @@
     css.setAttribute("href", STATIC_URL + "ksp_login/css/js_only.css");
     document.getElementsByTagName("head")[0].appendChild(css);
 
+    var show_element = function(elem, callback)
+    {
+        $(elem).slideDown('fast', callback);
+    };
+
+    var hide_element = function(elem, callback)
+    {
+        $(elem).slideUp('fast', callback);
+    };
+
     var simple_provider_action = function()
     {
         $(this).siblings('form').submit();
@@ -14,7 +24,7 @@
 
     var clear_selected_input_provider = function()
     {
-        $('div.ksp_login_selected_input_provider').hide('fast', function()
+        hide_element('div.ksp_login_selected_input_provider', function()
         {
             $(this).remove();
         });
@@ -37,7 +47,7 @@
         new_form.hide();
         var backend_list = myself.closest('.ksp_login_provider_list');
         backend_list.after(new_form);
-        new_form.show('fast');
+        show_element(new_form);
     };
 
     $('.ksp_login_provider_list > .provider_simple > img')
