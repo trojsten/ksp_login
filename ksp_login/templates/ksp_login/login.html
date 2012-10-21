@@ -15,7 +15,7 @@
         ešte nemáš konto, môžeš sa <a href="{% url "account_register" %}">zaregistrovať</a>.
         Odporúčame však využiť niektorú z&nbsp;vyššie uvedených možností.
     </p>
-    <form action="" method="post">
+    <form action="" method="post" id="ksp_login_authentication_form">
         {% csrf_token %}
         <table>
             {{ form.as_table }}

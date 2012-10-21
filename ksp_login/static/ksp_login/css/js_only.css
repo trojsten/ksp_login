@@ -13,9 +13,10 @@
 .ksp_login_provider_list img {
     cursor: pointer;
     padding: 5px;
+    vertical-align: middle;
 }
 
-div.ksp_login_selected_input_provider {
+div.ksp_login_selected_input_provider{
     text-align: center;
 }
 

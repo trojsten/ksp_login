@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KSP Login\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-20 23:29+0200\n"
+"POT-Creation-Date: 2012-10-21 14:52+0200\n"
 "PO-Revision-Date: 2012-10-17 10:00+0200\n"
 "Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
 "Language-Team: \n"
@@ -82,9 +82,8 @@ msgstr ""
 "Ak chcete s&nbsp;týmto kontom zasociovať ďalšie služby, môžete si vybrať "
 "z&nbsp;nižšie uvedeného zoznamu."
 
-#: templates/ksp_login/login.html:21
-#: templates/ksp_login/parts/backend_list.html:14
-#: templates/ksp_login/parts/login_box.html:14
+#: templates/ksp_login/login.html:25
+#: templates/ksp_login/parts/backend_list.html:15
 msgid "Log in"
 msgstr "Prihlásiť"
 
@@ -111,6 +110,10 @@ msgstr "Konto"
 #: templates/ksp_login/parts/associated_accounts_list.html:24
 msgid "Disconnect"
 msgstr "Odpojiť"
+
+#: templates/ksp_login/parts/login_box.html:15
+msgid "More login options"
+msgstr "Ďalšie možnosti pre prihlásenie"
 
 #: templates/ksp_login/parts/single_form.html:11
 msgid "Submit"
