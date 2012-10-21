@@ -1,0 +1,19 @@
+.ksp_login_provider_list form {
+    display: none;
+}
+
+.ksp_login_provider_list {
+    list-style: none;
+}
+
+.ksp_login_provider_list > li {
+    display: inline;
+}
+
+.ksp_login_provider_list img {
+    cursor: pointer;
+}
+
+div.ksp_login_selected_input_provider {
+    text-align: center;
+}
