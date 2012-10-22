@@ -60,7 +60,7 @@ def register(request, creation_form=KspUserCreationForm):
             if standalone:
                 return redirect('account_login')
             pipeline_state['user'] = user
-            request.session.modified = True
+            request.session['ksp_login_dummy_key'] = True
             print request.session.items()
             return redirect('socialauth_complete', backend=backend)
     else:
