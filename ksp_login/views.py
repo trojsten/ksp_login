@@ -13,6 +13,7 @@ from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import (KspUserCreationForm, PasswordChangeForm,
     UserProfileForm)
+from ksp_login.signals import user_form_requested
 
 
 def login(request):
@@ -32,43 +33,6 @@ def info(request):
 def logout(request):
     auth_logout(request)
     return redirect('account_info')
-
-
-def register(request, creation_form=KspUserCreationForm):
-    """
-    As the name suggests, registers a new user.
-
-    Can replace the create_user function in the SOCIAL_AUTH pipeline
-    (through ksp_login.pipeline.register_user, with the corresponding
-    save_status_to_session, of course) to make it possible for the user to
-    pick a username.
-    """
-    if request.user.is_authenticated():
-        return redirect('account_info')
-    try:
-        pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
-                                                 SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
-        backend = pipeline_state['backend']
-        pipeline_state = pipeline_state['kwargs']
-        standalone = False
-    except KeyError:
-        standalone = True
-    if request.method == "POST":
-        form = creation_form(request.POST, request=request)
-        if form.is_valid():
-            user = form.save()
-            if standalone:
-                return redirect('account_login')
-            pipeline_state['user'] = user
-            request.session['ksp_login_dummy_key'] = True
-            print request.session.items()
-            return redirect('socialauth_complete', backend=backend)
-    else:
-        form = creation_form(request=request)
-
-    return render(request, "ksp_login/registration.html", {
-        'form': form,
-    })
 
 
 @login_required
@@ -104,20 +68,77 @@ def password(request):
                            template_name='ksp_login/password.html')
 
 
+def register(request, creation_form=KspUserCreationForm):
+    """
+    As the name suggests, registers a new user.
+
+    Can replace the create_user function in the SOCIAL_AUTH pipeline
+    (through ksp_login.pipeline.register_user, with the corresponding
+    save_status_to_session, of course) to make it possible for the user to
+    pick a username.
+
+    Uses the user_form_requested signal to gather additional forms from
+    other applications to present to the user.
+    """
+    if request.user.is_authenticated():
+        return redirect('account_info')
+    try:
+        pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
+                                                 SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
+        backend = pipeline_state['backend']
+        pipeline_state = pipeline_state['kwargs']
+        standalone = False
+    except KeyError:
+        standalone = True
+
+    form_classes = [creation_form] + \
+                   [form for receiver, form in
+                    user_form_requested.send(sender=request, new_user=True)]
+
+    if request.method == "POST":
+        forms = [form(request.POST, request=request)
+                 for form in form_classes]
+        if all(form.is_valid() for form in forms):
+            user = forms[0].save()
+            for form in forms[1:]:
+                form.set_user(user)
+                form.save()
+            if standalone:
+                return redirect('account_login')
+            pipeline_state['user'] = user
+            request.session['ksp_login_dummy_key'] = True
+            return redirect('socialauth_complete', backend=backend)
+    else:
+        forms = [form(request=request) for form in form_classes]
+
+    return render(request, "ksp_login/registration.html", {
+        'forms': forms,
+    })
+
+
 @login_required
 def settings(request, settings_form=UserProfileForm):
     """
     Presents the user a form with their settings, basically the register
     form minus username minus password.
+
+    Uses the user_form_requested signal to gather additional forms from
+    other applications to present to the user.
     """
+    form_classes = [settings_form] + \
+                   [form for receiver, form in
+                    user_form_requested.send(sender=request, new_user=False)]
+
     if request.method == "POST":
-        form = settings_form(request.POST, user=request.user)
-        if form.is_valid():
-            form.save()
+        forms = [form(request.POST, user=request.user)
+                 for form in form_classes]
+        if all(form.is_valid() for form in forms):
+            for form in forms:
+                form.save()
             return redirect('account_info')
     else:
-        form = settings_form(user=request.user)
+        forms = [form(user=request.user) for form in form_classes]
 
     return render(request, 'ksp_login/settings.html', {
-        'form': form,
+        'forms': forms,
     })

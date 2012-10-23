@@ -1,0 +1,18 @@
+{% load url from future %}
+{% load i18n %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        {% for form in forms %}
+            {{ form.as_table }}
+        {% endfor %}
+        <tr class="form_buttons">
+            <td />
+            <td>
+                <input type="submit" value="{% trans "Submit" %}" />
+                <a href="{% url "account_info" %}">{% trans "Cancel" %}</a>
+            </td>
+        </tr>
+    </table>
+</form>
