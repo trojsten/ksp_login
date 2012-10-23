@@ -44,7 +44,7 @@ msgid ""
 "Since you're logging in using an external provider, this field is optional; "
 "however, by supplying it, you will be able to log in using a password. "
 msgstr ""
-"Keďže s aprihlasujete cez externého poskytovateľa, toto pole nie je povinné; "
+"Keďže sa prihlasujete cez externého poskytovateľa, toto pole nie je povinné; "
 "ak ho vyplníte, budete sa vedieť prihlásiť aj heslom. "
 
 #: forms.py:118
