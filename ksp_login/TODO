@@ -5,6 +5,5 @@
 - user merging
 - implement a password reset facility
 - use namespaced names for URL patterns
-- gather all required forms in user settings / registration
 - only include those URLs from social_auth that we need
 - wrap the backend list images in an anchor
