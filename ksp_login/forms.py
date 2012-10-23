@@ -17,6 +17,12 @@ class KspUserCreationForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email')
 
     def __init__(self, *args, **kwargs):
+        """
+        If the user is registering via an external service, this gathers
+        initial data from the service and marks the password fields as
+        optional, otherwise it just sets the help_text of the first
+        password field.
+        """
         try:
             request = kwargs['request']
             del kwargs['request']
