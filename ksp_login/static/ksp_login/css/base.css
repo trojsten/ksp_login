@@ -2,10 +2,14 @@ div#account_links {
     float: right;
 }
 
-.ksp_login_provider_list img, #ksp_login_association_list img {
-    width: 100px;
+.ksp_login_provider_list img {
+    width: 47px;
 }
 
 .ksp_login_provider_list form {
     display: inline;
+}
+
+#ksp_login_association_list img {
+    height: 25px;
 }
