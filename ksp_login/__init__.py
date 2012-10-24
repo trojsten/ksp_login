@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -35,6 +35,6 @@ def __activate_social_auth_monkeypatch():
     # We replace the regular dict in social_auth.backends.BACKENDSCACHE
     # with an OrderedDict in order to remember the order in which they
     # were imported based on settings.AUTHENTICATION_BACKENDS.
-    backends.BACKENDSCACHE = OrderedDict()
+    backends.BACKENDSCACHE = SortedDict()
 
 __activate_social_auth_monkeypatch()
