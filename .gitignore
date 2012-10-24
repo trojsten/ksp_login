@@ -1,0 +1,3 @@
+*.pyc
+# Vim swapfiles
+.*.sw[po]
