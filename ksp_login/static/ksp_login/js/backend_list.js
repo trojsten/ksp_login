@@ -7,6 +7,8 @@
     css.setAttribute("href", STATIC_URL + "ksp_login/css/js_only.css");
     document.getElementsByTagName("head")[0].appendChild(css);
 
+    $('.ksp_login_provider_list').addClass('ksp_login_provider_list_js');
+
     var show_element = function(elem, callback)
     {
         $(elem).slideDown('fast', callback);
