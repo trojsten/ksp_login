@@ -19,7 +19,8 @@ from ksp_login.signals import user_form_requested
 
 def login(request):
     if request.user.is_authenticated():
-        return redirect('account_info')
+        next_page = request.REQUEST.get('next', 'account_settings')
+        return redirect(next_page)
     return auth_login(request, template_name='ksp_login/login.html',
                       extra_context=login_providers(request))
 
