@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.contrib.auth import logout as auth_logout
+from django.utils.translation import ugettext_lazy as _
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import (login as auth_login,
-    password_change)
+from django.contrib.auth.views import (login as auth_login, logout as
+    auth_logout, password_change)
 from django.contrib.auth.forms import SetPasswordForm
 from social_auth.models import UserSocialAuth
 from social_auth.utils import setting
@@ -31,8 +32,9 @@ def info(request):
 
 
 def logout(request):
-    auth_logout(request)
-    return redirect('account_info')
+    response = auth_logout(request, next_page='/')
+    messages.success(request, _("Logout successful"))
+    return response
 
 
 @login_required

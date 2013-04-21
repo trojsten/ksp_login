@@ -1,5 +1,6 @@
 {% load url from future %}
 {% load i18n %}
+{% load ksp_login %}
 
 <ul class="ksp_login_provider_list">
     {% for provider in login_providers %}
@@ -12,6 +13,7 @@
                         <input type="text" name="{{ provider.required_field }}" />
                     </label>
                 {% endif %}
+                <input type="hidden" name="next" value="{% ksp_login_next %}" />
                 <input type="submit" value="{% trans "Log in" %}" />
             </form>
         </li>

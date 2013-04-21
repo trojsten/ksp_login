@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KSP Login\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-21 14:52+0200\n"
+"POT-Creation-Date: 2013-04-21 10:53+0200\n"
 "PO-Revision-Date: 2012-10-17 10:00+0200\n"
 "Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
 "Language-Team: \n"
@@ -31,7 +31,7 @@ msgstr "Launchpad username"
 msgid "MyOpenID username"
 msgstr "MyOpenID username"
 
-#: forms.py:39
+#: forms.py:45
 msgid ""
 "We recommend choosing a strong passphrase but we don't enforce any "
 "ridiculous constraints on your passwords."
@@ -39,7 +39,7 @@ msgstr ""
 "Odporúčame zvoliť silné heslo pozostávajúce z&nbsp;vety, ale nebudeme "
 "vynucovať žiadne absurdné obmedzenia."
 
-#: forms.py:47
+#: forms.py:53
 msgid ""
 "Since you're logging in using an external provider, this field is optional; "
 "however, by supplying it, you will be able to log in using a password. "
@@ -47,10 +47,14 @@ msgstr ""
 "Keďže sa prihlasujete cez externého poskytovateľa, toto pole nie je povinné; "
 "ak ho vyplníte, budete sa vedieť prihlásiť aj heslom. "
 
-#: forms.py:118
+#: forms.py:124
 msgid ""
 "Leave this field empty to disable password-based access to your account."
 msgstr "Pokiaľ toto pole necháte prázdne, nebude možné sa prihlásiť heslom."
+
+#: views.py:36
+msgid "Logout successful"
+msgstr "Odhlásenie úspešné"
 
 #: templates/ksp_login/info.html:8 templates/ksp_login/parts/login_box.html:5
 msgid "Logged in as"
@@ -83,7 +87,7 @@ msgstr ""
 "z&nbsp;nižšie uvedeného zoznamu."
 
 #: templates/ksp_login/login.html:25
-#: templates/ksp_login/parts/backend_list.html:15
+#: templates/ksp_login/parts/backend_list.html:16
 msgid "Log in"
 msgstr "Prihlásiť"
 
@@ -115,10 +119,12 @@ msgstr "Odpojiť"
 msgid "More login options"
 msgstr "Ďalšie možnosti pre prihlásenie"
 
+#: templates/ksp_login/parts/multiple_forms.html:13
 #: templates/ksp_login/parts/single_form.html:11
 msgid "Submit"
 msgstr "Odoslať"
 
+#: templates/ksp_login/parts/multiple_forms.html:14
 #: templates/ksp_login/parts/single_form.html:12
 msgid "Cancel"
 msgstr "Zrušiť"

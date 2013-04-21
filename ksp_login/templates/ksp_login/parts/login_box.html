@@ -1,16 +1,17 @@
 {% load url from future %}
 {% load i18n %}
+{% load ksp_login %}
 
 {% if user.is_authenticated %}
     {% trans "Logged in as" %}
     <a href="{% url "account_info" %}">{{ user.username }}</a>.
     <div id="account_links">
-        <a href="{% url "account_logout" %}">{% trans "Log out" %}</a><br />
+        <a href="{% url "account_logout" %}?next={% ksp_login_next %}">{% trans "Log out" %}</a><br />
         <a href="{% url "account_password" %}">{% trans "Change password" %}</a><br />
         <a href="{% url "account_settings" %}">{% trans "Settings" %}</a>
     </div>
     <div style="clear:both"></div>
 {% else %}
     {% include "ksp_login/parts/backend_list.html" with login_providers=login_providers_short %}
-    <a href="{% url "account_login" %}">{% trans "More login options" %}</a>
+    <a href="{% url "account_login" %}?next={% ksp_login_next %}">{% trans "More login options" %}</a>
 {% endif %}
