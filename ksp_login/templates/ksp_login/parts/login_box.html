@@ -4,7 +4,7 @@
 
 {% if user.is_authenticated %}
     {% trans "Logged in as" %}
-    <a href="{% url "account_info" %}">{{ user.username }}</a>.
+    <a href="{% url "account_settings" %}">{{ user.username }}</a>.
     <div id="account_links">
         <a href="{% url "account_logout" %}?next={% ksp_login_next %}">{% trans "Log out" %}</a><br />
         <a href="{% url "account_password" %}">{% trans "Change password" %}</a><br />

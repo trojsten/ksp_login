@@ -25,13 +25,6 @@ def login(request):
                       extra_context=login_providers(request))
 
 
-@login_required
-def info(request):
-    context = login_providers(request)
-    context['account_associations'] = UserSocialAuth.get_social_auth_for_user(request.user)
-    return render(request, 'ksp_login/info.html', context)
-
-
 def logout(request):
     response = auth_logout(request, next_page='/')
     messages.success(request, _("Logout successful"))
@@ -66,7 +59,7 @@ def password(request):
     else:
         form = SetPasswordForm
     return password_change(request,
-                           post_change_redirect=reverse('account_info'),
+                           post_change_redirect=reverse('account_settings'),
                            password_change_form=form,
                            template_name='ksp_login/password.html')
 
@@ -84,7 +77,7 @@ def register(request, creation_form=KspUserCreationForm):
     other applications to present to the user.
     """
     if request.user.is_authenticated():
-        return redirect('account_info')
+        return redirect('account_settings')
     try:
         pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
                                                  SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
@@ -138,10 +131,11 @@ def settings(request, settings_form=UserProfileForm):
         if all(form.is_valid() for form in forms):
             for form in forms:
                 form.save()
-            return redirect('account_info')
+            return redirect('account_settings')
     else:
         forms = [form(user=request.user) for form in form_classes]
 
     return render(request, 'ksp_login/settings.html', {
+        'account_associations': UserSocialAuth.get_social_auth_for_user(request.user),
         'forms': forms,
     })

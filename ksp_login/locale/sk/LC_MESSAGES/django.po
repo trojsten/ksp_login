@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KSP Login\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 10:53+0200\n"
+"POT-Creation-Date: 2013-04-21 18:05+0200\n"
 "PO-Revision-Date: 2012-10-17 10:00+0200\n"
 "Last-Translator: Michal Petrucha <michal.petrucha@ksp.sk>\n"
 "Language-Team: \n"
@@ -52,33 +52,34 @@ msgid ""
 "Leave this field empty to disable password-based access to your account."
 msgstr "Pokiaľ toto pole necháte prázdne, nebude možné sa prihlásiť heslom."
 
-#: views.py:36
+#: views.py:30
 msgid "Logout successful"
 msgstr "Odhlásenie úspešné"
 
-#: templates/ksp_login/info.html:8 templates/ksp_login/parts/login_box.html:5
+#: templates/ksp_login/info.html:8 templates/ksp_login/parts/login_box.html:6
 msgid "Logged in as"
 msgstr "Prihlásené ako"
 
-#: templates/ksp_login/info.html:9 templates/ksp_login/parts/login_box.html:8
+#: templates/ksp_login/info.html:9 templates/ksp_login/parts/login_box.html:9
 msgid "Log out"
 msgstr "Odhlásiť"
 
-#: templates/ksp_login/info.html:10 templates/ksp_login/parts/login_box.html:9
+#: templates/ksp_login/info.html:10
+#: templates/ksp_login/parts/login_box.html:10
 msgid "Change password"
 msgstr "Zmeniť heslo"
 
 #: templates/ksp_login/info.html:11
-#: templates/ksp_login/parts/login_box.html:10
+#: templates/ksp_login/parts/login_box.html:11
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: templates/ksp_login/info.html:14
+#: templates/ksp_login/info.html:14 templates/ksp_login/settings.html:11
 msgid "You can use any of the following services to log in to your account."
 msgstr ""
 "Na prihlásenie momentálne môžete použiť ktorúkoľvek z&nbsp;týchto služieb."
 
-#: templates/ksp_login/info.html:18
+#: templates/ksp_login/info.html:18 templates/ksp_login/settings.html:15
 msgid ""
 "If you want to associate other services to your account, feel free to pick "
 "any from the list below."
@@ -86,10 +87,9 @@ msgstr ""
 "Ak chcete s&nbsp;týmto kontom zasociovať ďalšie služby, môžete si vybrať "
 "z&nbsp;nižšie uvedeného zoznamu."
 
-#: templates/ksp_login/login.html:25
-#: templates/ksp_login/parts/backend_list.html:16
-msgid "Log in"
-msgstr "Prihlásiť"
+#: templates/ksp_login/password.html:5
+msgid "Password change"
+msgstr "Zmena hesla"
 
 #: templates/ksp_login/registration.html:7
 msgid ""
@@ -103,6 +103,21 @@ msgstr ""
 msgid "Account settings"
 msgstr "Nastavenia"
 
+#: templates/ksp_login/settings.html:9
+msgid "Login settings"
+msgstr "Nastavenia prihlasovania"
+
+#: templates/ksp_login/settings.html:20
+#, python-format
+msgid ""
+"\n"
+"            You can change your password <a href=\"%(passwd_url)s\">here</"
+"a>.\n"
+"        "
+msgstr ""
+"\n"
+"Zmeniť heslo je možné na <a href=\"%(passwd_url)s\">tejto stránke</a>."
+
 #: templates/ksp_login/parts/associated_accounts_list.html:7
 msgid "Provider"
 msgstr "Poskytovateľ"
@@ -115,7 +130,12 @@ msgstr "Konto"
 msgid "Disconnect"
 msgstr "Odpojiť"
 
-#: templates/ksp_login/parts/login_box.html:15
+#: templates/ksp_login/parts/backend_list.html:17
+#: templates/ksp_login/parts/login_full_contents.html:24
+msgid "Log in"
+msgstr "Prihlásiť"
+
+#: templates/ksp_login/parts/login_box.html:16
 msgid "More login options"
 msgstr "Ďalšie možnosti pre prihlásenie"
 
@@ -124,7 +144,5 @@ msgstr "Ďalšie možnosti pre prihlásenie"
 msgid "Submit"
 msgstr "Odoslať"
 
-#: templates/ksp_login/parts/multiple_forms.html:14
-#: templates/ksp_login/parts/single_form.html:12
-msgid "Cancel"
-msgstr "Zrušiť"
+#~ msgid "Cancel"
+#~ msgstr "Zrušiť"
