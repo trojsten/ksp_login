@@ -7,4 +7,4 @@
 - use namespaced names for URL patterns
 - only include those URLs from social_auth that we need
 - wrap the backend list images in an anchor
-- follow  the next parameter where applicable
+- get rid of mandatory context processors in favor of template tags
