@@ -13,5 +13,5 @@
     <div style="clear:both"></div>
 {% else %}
     {% include "ksp_login/parts/backend_list.html" with login_providers=login_providers_short %}
-    <a href="{% url "account_login" %}?next={% ksp_login_next %}">{% trans "More login options" %}</a>
+    <a class="ksp_login_more" href="{% url "account_login" %}?next={% ksp_login_next %}">{% trans "More login options" %}</a>
 {% endif %}

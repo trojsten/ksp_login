@@ -1,4 +1,4 @@
-(function($)
+ksp_login.jQuery(function($)
 {
     // First, load the CSS only used with JavaScript-enabled browsers.
     var css = document.createElement("link");
@@ -9,14 +9,34 @@
 
     $('.ksp_login_provider_list').addClass('ksp_login_provider_list_js');
 
+    var update_modal_size = function()
+    {
+        $(this).closest('.simplemodal-container').each(function()
+        {
+            var modal_box_div = $(this).find('#ksp_login_modal_box');
+            var height = modal_box_div.height();
+            var width = modal_box_div.width();
+            $.modal.update(height, width);
+            $('.simplemodal-wrap').css({overflow: 'hidden'});
+        });
+    }
+
     var show_element = function(elem, callback)
     {
-        $(elem).slideDown('fast', callback);
+        $(elem).slideDown({
+            duration: 'fast',
+            complete: callback,
+            progress: update_modal_size,
+        });
     };
 
     var hide_element = function(elem, callback)
     {
-        $(elem).slideUp('fast', callback);
+        $(elem).slideUp({
+            duration: 'fast',
+            complete: callback,
+            progress: update_modal_size,
+        });
     };
 
     var simple_provider_action = function()
@@ -52,8 +72,21 @@
         show_element(new_form);
     };
 
-    $('.ksp_login_provider_list > .provider_simple > img')
-        .on('click', simple_provider_action);
-    $('.ksp_login_provider_list > .provider_with_input > img')
-        .on('click', input_provider_action);
-})(ksp_login.jQuery);
+    var more_options_click = function()
+    {
+        $('#ksp_login_modal_box').modal({
+            overlayClose: true,
+        })
+        $('.simplemodal-wrap').css({overflow: 'hidden'});
+        return false;
+    }
+
+    $(document).on('click',
+                   '.ksp_login_provider_list > .provider_simple > img',
+                   simple_provider_action);
+    $(document).on('click',
+                   '.ksp_login_provider_list > .provider_with_input > img',
+                   input_provider_action);
+
+    $('.ksp_login_more').on('click', more_options_click);
+})

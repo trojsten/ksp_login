@@ -1,0 +1,28 @@
+{% load url from future %}
+{% load i18n %}
+{% load ksp_login %}
+
+<p>
+    Momentálne nie si prihlásené. Vyber si niektorú z&nbsp;možností.
+</p>
+
+{% include "ksp_login/parts/backend_list.html" %}
+
+<p>
+    Alternatívne sa môžeš prihlásiť pomocou prezývky a&nbsp;hesla. Ak
+    ešte nemáš konto, môžeš sa <a href="{% url "account_register" %}">zaregistrovať</a>.
+    Odporúčame však využiť niektorú z&nbsp;vyššie uvedených možností.
+</p>
+<form action="{% url "account_login" %}" method="post" class="ksp_login_authentication_form">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+        <tr>
+            <td />
+            <td>
+                <input type="hidden" name="next" value="{% ksp_login_next %}" />
+                <input type="submit" value="{% trans "Log in" %}" />
+            </td>
+        </tr>
+    </table>
+</form>

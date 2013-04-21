@@ -49,3 +49,12 @@ def login_providers_short(request):
     the social_auth context variable.
     """
     return {'login_providers_short': get_login_providers(request, short=True)}
+
+def login_providers_both(request):
+    """
+    Returns both the short and the long list of login providers.
+    """
+    return {
+        'login_providers': get_login_providers(request),
+        'login_providers_short': get_login_providers(request, short=True),
+    }
