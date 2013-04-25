@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
+from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = patterns('ksp_login.views',
     url(r'^login/$', 'login', name='account_login'),
@@ -12,4 +13,6 @@ urlpatterns = patterns('ksp_login.views',
 
 urlpatterns += patterns('',
     url(r'', include('social_auth.urls')),
+    url(r'^settings/', 'django.views.generic.simple.redirect_to',
+        {'url': reverse_lazy('account_settings')}),
 )
