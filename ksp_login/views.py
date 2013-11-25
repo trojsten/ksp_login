@@ -7,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import (login as auth_login, logout as
     auth_logout, password_change)
 from django.contrib.auth.forms import SetPasswordForm
-from social_auth.models import UserSocialAuth
-from social_auth.utils import setting
-from social_auth.views import disconnect as social_auth_disconnect
+from social.apps.django_app.default.models import UserSocialAuth
+from social.apps.django_app.utils import setting
+from social.apps.django_app.views import disconnect as social_disconnect
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import (KspUserCreationForm, PasswordChangeForm,
@@ -42,7 +42,7 @@ def disconnect(request, backend, association_id):
     has_assoc = associations.exclude(id=association_id).count()
     has_pass = request.user.has_usable_password()
     if has_assoc or has_pass:
-        return social_auth_disconnect(request, backend, association_id)
+        return social_disconnect(request, backend, association_id)
     return render(request, 'ksp_login/invalid_disconnect.html')
 
 
@@ -103,7 +103,7 @@ def register(request, creation_form=KspUserCreationForm):
                 return redirect('account_login')
             pipeline_state['user'] = user
             request.session['ksp_login_dummy_key'] = True
-            return redirect('socialauth_complete', backend=backend)
+            return redirect('social:complete', backend=backend)
     else:
         forms = [form(request=request) for form in form_classes]
 

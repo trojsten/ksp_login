@@ -12,7 +12,7 @@ urlpatterns = patterns('ksp_login.views',
 )
 
 urlpatterns += patterns('',
-    url(r'', include('social_auth.urls')),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
     url(r'^settings/', 'django.views.generic.simple.redirect_to',
         {'url': reverse_lazy('account_settings')}),
 )

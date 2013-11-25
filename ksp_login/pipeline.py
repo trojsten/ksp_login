@@ -1,8 +1,10 @@
 from django.utils.importlib import import_module
 from django.shortcuts import redirect
-from social_auth.utils import setting
+from social.apps.django_app.utils import setting
+from social.pipeline.partial import partial
 
 
+@partial
 def register_user(request, user, *args, **kwargs):
     """
     Pipeline function which redirects new users to the registration view.

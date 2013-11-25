@@ -19,7 +19,7 @@
                     <span>{{ association.uid }}</span>
                 </td>
                 <td>
-                    <form action="{% url "socialauth_disconnect_individual" association.provider association.id %}" method="post">
+                    <form action="{% url "social:disconnect_individual" association.provider association.id %}" method="post">
                         {% csrf_token %}
                         <input type="submit" value="{% trans "Disconnect" %}" />
                     </form>

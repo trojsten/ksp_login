@@ -3,7 +3,7 @@ from django.contrib.auth.forms import (UserCreationForm,
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
 from django.utils.translation import string_concat, ugettext_lazy as _
-from social_auth.utils import setting
+from social.apps.django_app.utils import setting
 
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 

@@ -1,8 +1,6 @@
-import re
-
-from social_auth.backends import get_backends
-from social_auth.utils import setting
-from social_auth.models import UserSocialAuth
+from social.backends.utils import load_backends
+from social.apps.django_app.default.models import UserSocialAuth
+from social.apps.django_app.utils import setting
 
 
 DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF = 3
@@ -23,12 +21,12 @@ def get_login_providers(request, short=False):
         """
         return {
             'name': name,
-            'required_field': klass.AUTH_BACKEND.REQUIRED_FIELD_NAME,
-            'required_field_verbose': klass.AUTH_BACKEND.REQUIRED_FIELD_VERBOSE_NAME,
+            'required_field': klass.REQUIRED_FIELD_NAME,
+            'required_field_verbose': klass.REQUIRED_FIELD_VERBOSE_NAME,
         }
 
     providers = [extract_backend_data(name, auth)
-                 for name, auth in get_backends().items()]
+                 for name, auth in load_backends(setting('AUTHENTICATION_BACKENDS')).items()]
     if short:
         return providers[:setting('AUTHENTICATION_PROVIDERS_BRIEF',
                                   DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF)]
@@ -49,6 +47,7 @@ def login_providers_short(request):
     the social_auth context variable.
     """
     return {'login_providers_short': get_login_providers(request, short=True)}
+
 
 def login_providers_both(request):
     """
