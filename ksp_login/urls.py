@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.core.urlresolvers import reverse_lazy
+from django.views.generic.base import RedirectView
 
 urlpatterns = patterns('ksp_login.views',
     url(r'^login/$', 'login', name='account_login'),
@@ -13,6 +14,5 @@ urlpatterns = patterns('ksp_login.views',
 
 urlpatterns += patterns('',
     url(r'', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^settings/', 'django.views.generic.simple.redirect_to',
-        {'url': reverse_lazy('account_settings')}),
+    url(r'^settings/', RedirectView.as_view(url=reverse_lazy('account_settings'))),
 )
