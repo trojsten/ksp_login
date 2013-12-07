@@ -102,7 +102,10 @@ def register(request, creation_form=KspUserCreationForm):
             if standalone:
                 return redirect('account_login')
             pipeline_state['user'] = user
-            request.session['ksp_login_dummy_key'] = True
+            # This ensures the top-level session dict changes, otherwise
+            # our changes in pipeline_state might not get stored.
+            request.session.setdefault('ksp_login_dummy_key', 0)
+            request.session['ksp_login_dummy_key'] += 1
             return redirect('social:complete', backend=backend)
     else:
         forms = [form(request=request) for form in form_classes]
