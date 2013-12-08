@@ -12,7 +12,6 @@ def __activate_social_auth_monkeypatch():
     from social.backends.yahoo import YahooOpenId
     from social.backends.google import GoogleOpenId
     from social.backends.yandex import YandexOpenId
-    from social.backends import utils
 
     BaseAuth.REQUIRED_FIELD_NAME = None
     BaseAuth.REQUIRED_FIELD_VERBOSE_NAME = None
@@ -30,13 +29,5 @@ def __activate_social_auth_monkeypatch():
     YahooOpenId.REQUIRED_FIELD_VERBOSE_NAME = None
     YandexOpenId.REQUIRED_FIELD_NAME = None
     YandexOpenId.REQUIRED_FIELD_VERBOSE_NAME = None
-
-    # We replace the regular dict in social.backends.utils.BACKENDSCACHE
-    # with an OrderedDict in order to remember the order in which they
-    # were imported based on settings.AUTHENTICATION_BACKENDS.
-    # This has a drawback of being reverted as soon as load_backends is
-    # called with force_load -- an upstream patch will be required for
-    # this to work reliably.
-    utils.BACKENDSCACHE = SortedDict()
 
 __activate_social_auth_monkeypatch()

@@ -7,6 +7,8 @@ from social.backends import utils
 
 class KspLoginTests(TestCase):
     def test_backend_order(self):
+        """Verify the providers are displayed in correct order.
+        """
         # The first three backends appear in the correct order in the
         # login box at the top of the page. Other backends only appear at
         # the bottom.
@@ -49,10 +51,6 @@ class KspLoginTests(TestCase):
             'social.backends.open_id.OpenIdAuth',
             'django.contrib.auth.backends.ModelBackend',
         ), AUTHENTICATION_PROVIDERS_BRIEF=2):
-            # Clear the backend cache so it repopulates according to the
-            # new order.
-            utils.BACKENDSCACHE = SortedDict()
-
             # This time only Launchpad and Google are in the login box and
             # others appear only below.
             response = self.client.get('/')
@@ -86,5 +84,3 @@ class KspLoginTests(TestCase):
             self.assertLess(match3.start(), match4.start())
             self.assertLess(match4.start(), match5.start())
 
-            # Clear again to avoid leaking state.
-            utils.BACKENDSCACHE = SortedDict()

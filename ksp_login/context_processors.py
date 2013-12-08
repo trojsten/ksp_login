@@ -1,5 +1,5 @@
-from social.backends.utils import load_backends
-from social.apps.django_app.default.models import UserSocialAuth
+from social.utils import module_member
+from social.backends.base import BaseAuth
 from social.apps.django_app.utils import setting
 
 
@@ -13,20 +13,20 @@ def get_login_providers(request, short=False):
     dictionary containing the backend name, name of required parameter if
     required and its verbose name.
     """
-    def extract_backend_data(name, klass):
+    def extract_backend_data(klass):
         """
         Helper function which extracts information useful for use in
         templates from SocialAuth subclasses and returns it as a
         dictionary.
         """
         return {
-            'name': name,
+            'name': klass.name,
             'required_field': klass.REQUIRED_FIELD_NAME,
             'required_field_verbose': klass.REQUIRED_FIELD_VERBOSE_NAME,
         }
 
-    providers = [extract_backend_data(name, auth)
-                 for name, auth in load_backends(setting('AUTHENTICATION_BACKENDS')).items()]
+    backends = (module_member(auth_backend) for auth_backend in setting('AUTHENTICATION_BACKENDS'))
+    providers = [extract_backend_data(backend) for backend in backends if issubclass(backend, BaseAuth)]
     if short:
         return providers[:setting('AUTHENTICATION_PROVIDERS_BRIEF',
                                   DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF)]
