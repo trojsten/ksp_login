@@ -3,8 +3,13 @@
   etc) into settings
 - make the views and templates AJAX-friendly
 - user merging
-- implement a password reset facility
-- use namespaced names for URL patterns
+- implement a password reset facility (use the one in d.c.auth)
+- use namespaced URL patterns
 - only include those URLs from social_auth that we need
 - wrap the backend list images in an anchor
 - get rid of mandatory context processors in favor of template tags
+- tests
+  - form gathering
+  - javascript
+  - account associations vs passwords
+  - connecting / disconnecting accounts
