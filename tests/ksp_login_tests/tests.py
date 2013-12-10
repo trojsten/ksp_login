@@ -1,11 +1,16 @@
 from __future__ import unicode_literals
 import re
 from django.test import TestCase
-from django.utils.datastructures import SortedDict
 from social.backends import utils
 
 
 class KspLoginTests(TestCase):
+    def social_testing_login(self, backend='test1', next=None, follow=True):
+        url = '/account/login/%s/' % (backend,)
+        if next is not None:
+            url = '%s?%s' % (url, next)
+        return self.client.get(url, follow=follow)
+
     def test_backend_order(self):
         """Verify the providers are displayed in correct order.
         """
@@ -84,3 +89,19 @@ class KspLoginTests(TestCase):
             self.assertLess(match3.start(), match4.start())
             self.assertLess(match4.start(), match5.start())
 
+    def test_testing_backend(self):
+        """Verifies that the testing backend behaves as it should.
+
+        That means, instead of redirecting to an external
+        confirmation/login page, it redirects back to the URL where the
+        auth process continues, assuming that the confirmation succeeded.
+        Then the process is supposed to continue by redirecting to a login
+        page.
+        """
+        response = self.social_testing_login(follow=False)
+        self.assertRedirects(response, '/account/complete/test1/',
+                             target_status_code=302)
+        response = self.client.get('/account/complete/test1/')
+        self.assertRedirects(response, '/account/register/')
+        response = self.social_testing_login(follow=True)
+        self.assertRedirects(response, '/account/register/')

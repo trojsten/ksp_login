@@ -51,6 +51,7 @@ AUTHENTICATION_BACKENDS = (
     'ksp_login.backends.LaunchpadAuth',
     'social.backends.open_id.OpenIdAuth',
     'django.contrib.auth.backends.ModelBackend',
+    'ksp_login_tests.social_backend.DummyTestingAuth1',
 )
 
 AUTHENTICATION_PROVIDERS_BRIEF = 3
