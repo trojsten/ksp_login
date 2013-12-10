@@ -1,0 +1,1 @@
+recursive-include ksp_login *.html *.js *.css *.png *.svg *.mo *.po
