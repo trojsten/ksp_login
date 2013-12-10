@@ -94,7 +94,7 @@ class KspLoginTests(TestCase):
             self.assertLess(match4.start(), match5.start())
 
     def test_testing_backend(self):
-        """Verifies that the testing backend behaves as it should.
+        """Verify that the testing backend behaves as it should.
 
         That means, instead of redirecting to an external
         confirmation/login page, it redirects back to the URL where the
