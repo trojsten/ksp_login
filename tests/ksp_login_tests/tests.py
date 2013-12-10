@@ -1,10 +1,14 @@
 from __future__ import unicode_literals
 import re
+from django.contrib.auth.models import User
 from django.test import TestCase
 from social.backends import utils
 
 
 class KspLoginTests(TestCase):
+    def create_user(self):
+        return User.objects.create_user('koniiiik', 'a@b.com', 'secret')
+
     def social_testing_login(self, backend='test1', next=None, follow=True):
         url = '/account/login/%s/' % (backend,)
         if next is not None:
@@ -105,3 +109,51 @@ class KspLoginTests(TestCase):
         self.assertRedirects(response, '/account/register/')
         response = self.social_testing_login(follow=True)
         self.assertRedirects(response, '/account/register/')
+
+    def test_registration_social(self):
+        """Verify the registration process works with the social flow.
+
+        When a user logs in for the first time using an unknown social
+        account, she has to fill out the registration form before she is
+        let in.
+        """
+        response = self.social_testing_login()
+        # A registration form is displayed to the user.
+        self.assertRedirects(response, '/account/register/')
+        # The registration form is supposed to be filled in with values
+        # retrieved from the auth provider.
+        self.assertIn(
+            b'<input id="id_username" type="text" name="username" value="koniiiik"',
+            response.content,
+        )
+        self.assertIn(
+            b'<input id="id_first_name" type="text" name="first_name" value="Colleague"',
+            response.content,
+        )
+        self.assertIn(
+            b'<input id="id_last_name" type="text" name="last_name" value="Knuk"',
+            response.content,
+        )
+        self.assertIn(
+            b'<input id="id_email" type="text" name="email" value="b@a.com"',
+            response.content,
+        )
+        # Submit the registration form...
+        data = {
+            'username': 'koniiiik',
+            'email': 'b@a.com',
+            'first_name': 'Colleague',
+            'last_name': 'Knuk',
+        }
+        response = self.client.post('/account/register/', data,
+                                    follow=True)
+        # The redirect chain continues through the social:complete view
+        # and lands at the LOGIN_URL destination.
+        self.assertEquals(response.redirect_chain,
+                          [('http://testserver/account/complete/test1/', 302),
+                          ('http://testserver/account/', 302)])
+        # The resulting page shows the user logged in and with a social
+        # association.
+        self.assertIn(b'Logged in as', response.content)
+        self.assertIn(b'<a href="/account/">koniiiik</a>', response.content)
+        self.assertIn(b'Testing UID #1', response.content)

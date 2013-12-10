@@ -61,7 +61,7 @@ class KspUserCreationForm(UserCreationForm):
         social_auth pipeline state.
         """
         return None if not pipeline_state else {
-            'username': pipeline_state['username'],
+            'username': pipeline_state['details']['username'],
             'first_name': pipeline_state['details']['first_name'],
             'last_name': pipeline_state['details']['last_name'],
             'email': pipeline_state['details']['email'],
