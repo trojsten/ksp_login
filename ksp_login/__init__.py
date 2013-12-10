@@ -1,4 +1,3 @@
-from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
 
 
