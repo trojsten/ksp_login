@@ -10,6 +10,7 @@ class DummyTestingAuth1(BaseOAuth2):
     """
     name = 'test1'
     REDIRECT_STATE = False
+    STATE_PARAMETER = False
 
     def auth_url(self):
         return self.get_redirect_uri()
