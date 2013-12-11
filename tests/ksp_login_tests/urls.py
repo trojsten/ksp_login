@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from django.core.urlresolvers import reverse_lazy
 
 
