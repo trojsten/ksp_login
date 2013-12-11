@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import re
 from django.contrib.auth.models import User
+from django.forms.fields import EmailField
 from django.test import TestCase
 from social.backends import utils
 
@@ -137,9 +138,12 @@ class KspLoginTests(TestCase):
             b'<input id="id_last_name" maxlength="30" name="last_name" type="text" value="Knuk" />',
             html=True,
         )
+        # The type of an EmailWidget has changed in 1.6, which means we
+        # need to render it manually here.
+        expected = EmailField().widget.render('email', 'b@a.com', {'maxlength': 75, 'id': 'id_email'})
         self.assertContains(
             response,
-            b'<input id="id_email" maxlength="75" name="email" type="text" value="b@a.com" />',
+            expected.encode('utf-8'),
             html=True,
         )
         # Submit the registration form...
