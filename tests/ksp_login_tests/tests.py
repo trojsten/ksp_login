@@ -122,21 +122,25 @@ class KspLoginTests(TestCase):
         self.assertRedirects(response, '/account/register/')
         # The registration form is supposed to be filled in with values
         # retrieved from the auth provider.
-        self.assertIn(
-            b'<input id="id_username" type="text" name="username" value="koniiiik"',
-            response.content,
+        self.assertContains(
+            response,
+            b'<input id="id_username" maxlength="30" name="username" type="text" value="koniiiik" />',
+            html=True,
         )
-        self.assertIn(
-            b'<input id="id_first_name" type="text" name="first_name" value="Colleague"',
-            response.content,
+        self.assertContains(
+            response,
+            b'<input id="id_first_name" maxlength="30" name="first_name" type="text" value="Colleague" />',
+            html=True,
         )
-        self.assertIn(
-            b'<input id="id_last_name" type="text" name="last_name" value="Knuk"',
-            response.content,
+        self.assertContains(
+            response,
+            b'<input id="id_last_name" maxlength="30" name="last_name" type="text" value="Knuk" />',
+            html=True,
         )
-        self.assertIn(
-            b'<input id="id_email" type="text" name="email" value="b@a.com"',
-            response.content,
+        self.assertContains(
+            response,
+            b'<input id="id_email" maxlength="75" name="email" type="text" value="b@a.com" />',
+            html=True,
         )
         # Submit the registration form...
         data = {
