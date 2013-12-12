@@ -160,9 +160,9 @@ class KspLoginTests(TestCase):
                                     follow=True)
         # The redirect chain continues through the social:complete view
         # and lands at the LOGIN_URL destination.
-        self.assertEquals(response.redirect_chain,
-                          [('http://testserver/account/complete/test1/', 302),
-                          ('http://testserver/account/', 302)])
+        self.assertEqual(response.redirect_chain,
+                         [('http://testserver/account/complete/test1/', 302),
+                         ('http://testserver/account/', 302)])
         # The resulting page shows the user logged in and with a social
         # association.
         self.assertIn(b'Logged in as', response.content)
@@ -178,9 +178,9 @@ class KspLoginTests(TestCase):
 
         # There's a single social auth for the current user.
         self.assertContains(response, b'Testing UID #1')
-        self.assertEquals(len(user.social_auth.all()), 1)
+        self.assertEqual(len(user.social_auth.all()), 1)
         auth = user.social_auth.get()
-        self.assertEquals(auth.uid, 'Testing UID #1')
+        self.assertEqual(auth.uid, 'Testing UID #1')
 
         # TODO: test that GET doesn't do anything
 
@@ -190,4 +190,4 @@ class KspLoginTests(TestCase):
         self.assertRedirects(response, '/account/')
         self.assertNotContains(response, b'Testing UID #1')
         self.assertContains(response, b"don't have any services associated")
-        self.assertEquals(len(user.social_auth.all()), 0)
+        self.assertEqual(len(user.social_auth.all()), 0)
