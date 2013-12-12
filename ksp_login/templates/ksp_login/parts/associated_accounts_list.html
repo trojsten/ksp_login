@@ -1,30 +1,36 @@
 {% load url from future %}
 {% load i18n %}
 
-<table id="ksp_login_association_list">
+{% if account_associations %}
+  <table id="ksp_login_association_list">
     <thead>
-        <tr>
-            <th>{% trans "Provider" %}</th>
-            <th>{% trans "Account" %}</th>
-            <td></td>
-        </tr>
+      <tr>
+        <th>{% trans "Provider" %}</th>
+        <th>{% trans "Account" %}</th>
+        <td></td>
+      </tr>
     </thead>
     <tbody>
-        {% for association in account_associations %}
-            <tr>
-                <td>
-                    <img src="{{ STATIC_URL }}ksp_login/img/{{ association.provider }}.png" alt="{{ association.provider }}" />
-                </td>
-                <td>
-                    <span>{{ association.uid }}</span>
-                </td>
-                <td>
-                    <form action="{% url "social:disconnect_individual" association.provider association.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="{% trans "Disconnect" %}" />
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
+      {% for association in account_associations %}
+        <tr>
+          <td>
+            <img src="{{ STATIC_URL }}ksp_login/img/{{ association.provider }}.png" alt="{{ association.provider }}" />
+          </td>
+          <td>
+            <span>{{ association.uid }}</span>
+          </td>
+          <td>
+            <form action="{% url "social:disconnect_individual" association.provider association.id %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="{% trans "Disconnect" %}" />
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
     </tbody>
-</table>
+  </table>
+{% else %}
+  <p>
+    {% trans "You don't have any services associated with your account." %}
+  </p>
+{% endif %}
