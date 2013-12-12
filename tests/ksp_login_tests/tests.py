@@ -10,6 +10,9 @@ class KspLoginTests(TestCase):
     def create_user(self):
         return User.objects.create_user('koniiiik', 'a@b.com', 'secret')
 
+    def login(self):
+        return self.client.login(username='koniiiik', password='secret')
+
     def social_testing_login(self, backend='test1', next=None, follow=True):
         url = '/account/login/%s/' % (backend,)
         if next is not None:
@@ -165,3 +168,26 @@ class KspLoginTests(TestCase):
         self.assertIn(b'Logged in as', response.content)
         self.assertIn(b'<a href="/account/">koniiiik</a>', response.content)
         self.assertIn(b'Testing UID #1', response.content)
+
+    def test_disassociate(self):
+        """Verify social account disassociation works as intended.
+        """
+        user = self.create_user()
+        self.login()
+        response = self.social_testing_login()
+
+        # There's a single social auth for the current user.
+        self.assertContains(response, b'Testing UID #1')
+        self.assertEquals(len(user.social_auth.all()), 1)
+        auth = user.social_auth.get()
+        self.assertEquals(auth.uid, 'Testing UID #1')
+
+        # TODO: test that GET doesn't do anything
+
+        # Disassociate the social auth.
+        response = self.client.post('/account/disconnect/test1/%d/' % (auth.id,),
+                                    follow=True)
+        self.assertRedirects(response, '/account/')
+        self.assertNotContains(response, b'Testing UID #1')
+        self.assertContains(response, b"don't have any services associated")
+        self.assertEquals(len(user.social_auth.all()), 0)

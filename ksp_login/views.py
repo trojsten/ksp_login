@@ -42,7 +42,8 @@ def disconnect(request, backend, association_id):
     has_assoc = associations.exclude(id=association_id).count()
     has_pass = request.user.has_usable_password()
     if has_assoc or has_pass:
-        return social_disconnect(request, backend, association_id)
+        return social_disconnect(request=request, backend=backend,
+                                 association_id=association_id)
     return render(request, 'ksp_login/invalid_disconnect.html')
 
 
