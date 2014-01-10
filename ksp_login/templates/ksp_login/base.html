@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% comment %}
+  This template serves as an intermediary intended for easier
+  incorporation of the provided ksp_login views and templates into a
+  project. The templates used by ksp_login views all extend this base
+  template and override its ksp_login_title and ksp_login_content blocks.
+  This makes it easy to make the template extend your specific base
+  template, whatever its name, and include the content provided by those
+  templates wherever required.
+{% endcomment %}
+
+{% block title %}{% block ksp_login_title %}{% endblock ksp_login_title %}{% endblock title %}
+
+{% block content %}
+  {% block ksp_login_content %}
+  {% endblock ksp_login_content %}
+{% endblock content %}

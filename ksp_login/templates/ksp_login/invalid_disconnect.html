@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends "ksp_login/base.html" %}
 
 {% load url from future %}
 
-{% block content %}
+{% block ksp_login_content %}
     <p>
         Pred tým, ako odstrániš asociáciu na posledné externé konto, si
         <a href="{% url "account_password" %}">nastav heslo</a>, inak sa
         nebudeš môcť opäť prihlásiť.
     </p>
-{% endblock content %}
+{% endblock ksp_login_content %}
