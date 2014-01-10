@@ -148,3 +148,36 @@ class PasswordChangeForm(AuthPasswordChangeForm):
         if commit:
             user.save()
         return user
+
+
+class BaseUserProfileForm(ModelForm):
+    """
+    Base class for any additional user info forms. This implements the
+    contract required by the signal-based form gathering mechanism and the
+    views it uses.
+    """
+
+    # Override this attribute if the ForeignKey to User in your model is
+    # called something other than 'user'.
+    USER_MODEL_FIELD = 'user'
+
+    def __init__(self, *args, **kwargs):
+        kwargs.pop('request', None)
+        user = kwargs.pop('user', None)
+        self.user = user
+        if user is not None:
+            inst_kw = {self.USER_MODEL_FIELD: user}
+            instance, created = self._meta.model.objects.get_or_create(**inst_kw)
+            kwargs['instance'] = instance
+        super(BaseUserProfileForm, self).__init__(*args, **kwargs)
+
+    def set_user(self, user):
+        self.user = user
+
+    def save(self, commit=True):
+        instance = super(BaseUserProfileForm, self).save(commit=False)
+        if self.user is not None:
+            setattr(instance, self.USER_MODEL_FIELD, self.user)
+        if commit:
+            instance.save()
+        return instance

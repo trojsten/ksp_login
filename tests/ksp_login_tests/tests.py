@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import re
 from django.contrib.auth.models import User
-from django.forms.fields import EmailField
+from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
 from social.backends import utils
 
@@ -141,7 +141,7 @@ class KspLoginTests(TestCase):
             b'<input id="id_last_name" maxlength="30" name="last_name" type="text" value="Knuk" />',
             html=True,
         )
-        # The type of an EmailWidget has changed in 1.6, which means we
+        # The type of an EmailInput has changed in 1.6, which means we
         # need to render it manually here.
         expected = EmailField().widget.render('email', 'b@a.com', {'maxlength': 75, 'id': 'id_email'})
         self.assertContains(
@@ -191,3 +191,53 @@ class KspLoginTests(TestCase):
         self.assertNotContains(response, b'Testing UID #1')
         self.assertContains(response, b"don't have any services associated")
         self.assertEqual(len(user.social_auth.all()), 0)
+
+    def test_registration_details_form(self):
+        """Verify that signal-based registration/profile form gathering works.
+        """
+        response = self.social_testing_login()
+        # A registration form is displayed to the user.
+        self.assertRedirects(response, '/account/register/')
+        # The registration form includes additional fields from the
+        # UserProfileForm defined in this testing app.
+        self.assertContains(
+            response,
+            b'<input type="text" name="birthday" id="id_birthday" />',
+            html=True,
+        )
+        # The type of an NumberInput has changed in 1.6, which means we
+        # need to render it manually here.
+        expected = IntegerField().widget.render('shoe_size', None, {'id': 'id_shoe_size'})
+        self.assertContains(
+            response,
+            expected.encode('utf-8'),
+            html=True,
+        )
+        # Submit the registration form...
+        data = {
+            'username': 'koniiiik',
+            'email': 'b@a.com',
+            'first_name': 'Colleague',
+            'last_name': 'Knuk',
+            'birthday': '2014-01-10',
+            'shoe_size': 47,
+        }
+        response = self.client.post('/account/register/', data,
+                                    follow=True)
+        # The account settings page should also contain the additional
+        # form, pre-filled with previously submitted values.
+        response = self.client.get('/account/')
+        print(response)
+        self.assertContains(
+            response,
+            b'<input type="text" value="2014-01-10" name="birthday" id="id_birthday" />',
+            html=True,
+        )
+        # The type of an NumberInput has changed in 1.6, which means we
+        # need to render it manually here.
+        expected = IntegerField().widget.render('shoe_size', 47, {'id': 'id_shoe_size'})
+        self.assertContains(
+            response,
+            expected.encode('utf-8'),
+            html=True,
+        )

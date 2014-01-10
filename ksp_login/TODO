@@ -9,7 +9,6 @@
 - wrap the backend list images in an anchor
 - get rid of mandatory context processors in favor of template tags
 - tests
-  - form gathering
   - javascript
   - account associations vs passwords
   - connecting / disconnecting accounts
