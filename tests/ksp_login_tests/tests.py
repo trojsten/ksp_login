@@ -227,14 +227,11 @@ class KspLoginTests(TestCase):
         # The account settings page should also contain the additional
         # form, pre-filled with previously submitted values.
         response = self.client.get('/account/')
-        print(response)
         self.assertContains(
             response,
             b'<input type="text" value="2014-01-10" name="birthday" id="id_birthday" />',
             html=True,
         )
-        # The type of an NumberInput has changed in 1.6, which means we
-        # need to render it manually here.
         expected = IntegerField().widget.render('shoe_size', 47, {'id': 'id_shoe_size'})
         self.assertContains(
             response,
