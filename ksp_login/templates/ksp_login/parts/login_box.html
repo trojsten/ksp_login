@@ -2,20 +2,33 @@
 {% load i18n %}
 {% load ksp_login %}
 
-{% if user.is_authenticated %}
-    {% trans "Logged in as" %}
-    <a href="{% url "account_settings" %}">{{ user.username }}</a>.
-    <div id="account_links">
-        <a href="{% url "account_logout" %}?next={% ksp_login_next %}">{% trans "Log out" %}</a><br />
-        <a href="{% url "account_password" %}">{% trans "Change password" %}</a><br />
-        <a href="{% url "account_settings" %}">{% trans "Settings" %}</a>
-        {% url "admin:index" as admin_url %}
-        {% if user.is_staff and admin_url %}
-            <br /><a href="{{ admin_url }}">{% trans "Site administration" %}</a>
-        {% endif %}
+<ul class="nav navbar-nav navbar-right">
+<li class="dropdown">
+  {% if user.is_authenticated %}
+    <p class="dropdown-toggle btn btn-primary navbar-btn" id="login-dropdown" data-toggle="dropdown">
+      {% trans "Logged in as" %}
+      {{ user.username }}
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="login-dropdown"
+        id="account_links">
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "account_logout" %}?next={% ksp_login_next %}">{% trans "Log out" %}</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "account_password" %}">{% trans "Change password" %}</a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "account_settings" %}">{% trans "Settings" %}</a></li>
+      {% url "admin:index" as admin_url %}
+      {% if user.is_staff and admin_url %}
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ admin_url }}">{% trans "Site administration" %}</a></li>
+      {% endif %}
+    </ul>
+  {% else %}
+    <p class="dropdown-toggle btn btn-primary navbar-btn" id="login-dropdown" data-toggle="dropdown">
+      {% trans "Log in" %}
+      <span class="caret"></span>
+    </p>
+    <div class="dropdown-menu" aria-labelledby="login-dropdown">
+      {% include "ksp_login/parts/backend_list.html" with login_providers=login_providers_short %}
+      <a class="ksp_login_more" href="{% url "account_login" %}?next={% ksp_login_next %}">{% trans "More login options" %}</a>
     </div>
-    <div style="clear:both"></div>
-{% else %}
-    {% include "ksp_login/parts/backend_list.html" with login_providers=login_providers_short %}
-    <a class="ksp_login_more" href="{% url "account_login" %}?next={% ksp_login_next %}">{% trans "More login options" %}</a>
-{% endif %}
+  {% endif %}
+</li>
+</ul>

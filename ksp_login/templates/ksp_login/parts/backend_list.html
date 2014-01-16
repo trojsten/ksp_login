@@ -3,19 +3,21 @@
 {% load ksp_login %}
 
 <ul class="ksp_login_provider_list">
-    {% for provider in login_providers %}
-        <li class="provider_{% if provider.required_field %}with_input{% else %}simple{% endif %}">
-            <img src="{{ STATIC_URL }}ksp_login/img/{{ provider.name }}.png" title="{{ provider.name }}" alt="{{ provider.name }}" />
-            <form action="{% url "social:begin" provider.name %}" method="get">
-                {% csrf_token %}
-                {% if provider.required_field %}
-                    <label>{{ provider.required_field_verbose }}
-                        <input type="text" name="{{ provider.required_field }}" />
-                    </label>
-                {% endif %}
-                <input type="hidden" name="next" value="{% ksp_login_next %}" />
-                <input type="submit" value="{% trans "Log in" %}" />
-            </form>
-        </li>
-    {% endfor %}
+  {% for provider in login_providers %}
+    <li class="provider_{% if provider.required_field %}with_input{% else %}simple{% endif %}">
+      <a href="#">
+        <img src="{{ STATIC_URL }}ksp_login/img/{{ provider.name }}.png" title="{{ provider.name }}" alt="{{ provider.name }}" />
+      </a>
+      <form action="{% url "social:begin" provider.name %}" method="get">
+        {% csrf_token %}
+        {% if provider.required_field %}
+          <label>{{ provider.required_field_verbose }}
+            <input type="text" name="{{ provider.required_field }}" />
+          </label>
+        {% endif %}
+        <input type="hidden" name="next" value="{% ksp_login_next %}" />
+        <input type="submit" value="{% trans "Log in" %}" />
+      </form>
+    </li>
+  {% endfor %}
 </ul>

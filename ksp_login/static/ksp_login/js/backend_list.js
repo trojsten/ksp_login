@@ -1,12 +1,6 @@
 ksp_login.jQuery(function($)
 {
-    // First, load the CSS only used with JavaScript-enabled browsers.
-    var css = document.createElement("link");
-    css.setAttribute("rel", "stylesheet");
-    css.setAttribute("type", "text/css");
-    css.setAttribute("href", STATIC_URL + "ksp_login/css/js_only.css");
-    document.getElementsByTagName("head")[0].appendChild(css);
-
+    // Apply js-dependent CSS.
     $('.ksp_login_provider_list').addClass('ksp_login_provider_list_js');
 
     var update_modal_size = function()
@@ -39,8 +33,11 @@ ksp_login.jQuery(function($)
         });
     };
 
-    var simple_provider_action = function()
+    var simple_provider_action = function(e)
     {
+        // Stop propagation to prevent Bootstrap from closing the dropdown
+        // this might be in.
+        e.stopPropagation();
         $(this).siblings('form').submit();
     };
 
@@ -54,8 +51,11 @@ ksp_login.jQuery(function($)
             .removeClass('ksp_login_selected_provider_button');
     };
 
-    var input_provider_action = function()
+    var input_provider_action = function(e)
     {
+        // Stop propagation to prevent Bootstrap from closing the dropdown
+        // this might be in.
+        e.stopPropagation();
         var myself = $(this);
         if (myself.hasClass('ksp_login_selected_provider_button'))
         {
@@ -76,17 +76,22 @@ ksp_login.jQuery(function($)
     {
         $('#ksp_login_modal_box').modal({
             overlayClose: true,
+            autoResize: true,
         })
-        $('.simplemodal-wrap').css({overflow: 'hidden'});
         return false;
     }
 
-    $(document).on('click',
-                   '.ksp_login_provider_list > .provider_simple > img',
-                   simple_provider_action);
-    $(document).on('click',
-                   '.ksp_login_provider_list > .provider_with_input > img',
-                   input_provider_action);
+    // We have to directly bind the handlers to the elements themselves;
+    // if we bind them to document, they get called after the Bootstrap
+    // dropdown they reside in is closed.
+    $('.ksp_login_provider_list > .provider_simple > a').on(
+        'click',
+        simple_provider_action
+    );
+    $('.ksp_login_provider_list > .provider_with_input > a').on(
+        'click',
+        input_provider_action
+    );
 
     $('.ksp_login_more').on('click', more_options_click);
 })

@@ -13,3 +13,78 @@ div#account_links {
 #ksp_login_association_list img {
     height: 25px;
 }
+
+/* Bootstrap from 3.0 on invasively changes the sizing model for
+ * *everything*. This breaks, for example, simplemodal. Revert to
+ * content-box for everything simplemodal-related and ksp_login_modal_box
+ * to make it work.
+ */
+
+#ksp_login_modal_box,
+#ksp_login_modal_box *,
+#ksp_login_modal_box *:after,
+#ksp_login_modal_box *:before,
+[class*='simplemodal'],
+[class*='simplemodal'] *,
+[class*='simplemodal'] *:after,
+[class*='simplemodal'] *:before {
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+}
+
+/* The following section contains JavaScript-only styles. */
+
+.ksp_login_provider_list_js form {
+    display: none;
+}
+
+.ksp_login_provider_list_js {
+    list-style: none;
+    padding: 0px;
+}
+
+.ksp_login_provider_list_js > li {
+    display: inline-block;
+}
+
+.ksp_login_provider_list_js a {
+    display: inline-block;
+    padding: 5px;
+    vertical-align: middle;
+    line-height: 1em;
+}
+
+div.ksp_login_selected_input_provider{
+    text-align: center;
+}
+
+.ksp_login_selected_provider_button {
+    background: #ccccff;
+}
+
+.simplemodal-overlay {
+    background-color: #000;
+}
+
+.simplemodal-container {
+    background-color: #fff;
+    padding: 2em;
+}
+
+#ksp_login_modal_box {
+    overflow: hidden;
+    min-width: 22em;
+    max-width: 40em;
+}
+
+.simplemodal-container a.modalCloseImg {
+    background: url('../img/close.svg');
+    background-size: 100% 100%;
+    height: 2em;
+    width: 2em;
+    position: absolute;
+    right: -1em;
+    top: -1em;
+    z-index: 4700;
+}
