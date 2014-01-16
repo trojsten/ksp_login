@@ -9,7 +9,7 @@
       {% trans "Logged in as" %}
       {{ user.username }}
       <span class="caret"></span>
-    </a>
+    </p>
     <ul class="dropdown-menu" role="menu" aria-labelledby="login-dropdown"
         id="account_links">
       <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "account_logout" %}?next={% ksp_login_next %}">{% trans "Log out" %}</a></li>
