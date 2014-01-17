@@ -166,7 +166,7 @@ class KspLoginTests(TestCase):
         # The resulting page shows the user logged in and with a social
         # association.
         self.assertIn(b'Logged in as', response.content)
-        self.assertIn(b'<a href="/account/">koniiiik</a>', response.content)
+        self.assertIn(b'<a href="/account/" class="navbar-link">koniiiik</a>', response.content)
         self.assertIn(b'Testing UID #1', response.content)
 
     def test_disassociate(self):

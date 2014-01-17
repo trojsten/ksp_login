@@ -94,4 +94,14 @@ ksp_login.jQuery(function($)
     );
 
     $('.ksp_login_more').on('click', more_options_click);
+
+    // If the bootstrap dropdown JS is loaded in the global jQuery object,
+    // prevent following links in the navbar dropdown button.
+    if (window.$.fn.dropdown !== undefined)
+    {
+        $('#login-dropdown a').on('click', function(e)
+        {
+            e.preventDefault();
+        });
+    }
 })
