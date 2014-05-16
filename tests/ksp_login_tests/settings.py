@@ -66,3 +66,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
 )
+
+KSP_LOGIN_PROFILE_FORMS = (
+    'ksp_login_tests.forms.UserProfileForm',
+)

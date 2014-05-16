@@ -13,8 +13,7 @@ from social.apps.django_app.views import disconnect as social_disconnect
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import (KspUserCreationForm, PasswordChangeForm,
-    UserProfileForm)
-from ksp_login.signals import user_form_requested
+    UserProfileForm, get_profile_forms)
 
 
 def login(request):
@@ -74,8 +73,8 @@ def register(request, creation_form=KspUserCreationForm):
     save_status_to_session, of course) to make it possible for the user to
     pick a username.
 
-    Uses the user_form_requested signal to gather additional forms from
-    other applications to present to the user.
+    Also presents additional app-specific forms listed in the
+    KSP_LOGIN_PROFILE_FORMS setting to the user.
     """
     if request.user.is_authenticated():
         return redirect('account_settings')
@@ -88,9 +87,7 @@ def register(request, creation_form=KspUserCreationForm):
     except KeyError:
         standalone = True
 
-    form_classes = [creation_form] + \
-                   [form for receiver, form in
-                    user_form_requested.send(sender=request, new_user=True)]
+    form_classes = [creation_form] + get_profile_forms()
 
     if request.method == "POST":
         forms = [form(request.POST, request=request)
@@ -122,12 +119,10 @@ def settings(request, settings_form=UserProfileForm):
     Presents the user a form with their settings, basically the register
     form minus username minus password.
 
-    Uses the user_form_requested signal to gather additional forms from
-    other applications to present to the user.
+    Also presents additional app-specific forms listed in the
+    KSP_LOGIN_PROFILE_FORMS setting to the user.
     """
-    form_classes = [settings_form] + \
-                   [form for receiver, form in
-                    user_form_requested.send(sender=request, new_user=False)]
+    form_classes = [settings_form] + get_profile_forms()
 
     if request.method == "POST":
         forms = [form(request.POST, user=request.user)

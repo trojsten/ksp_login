@@ -17,6 +17,18 @@ def long_description():
         return LONG_DESCRIPTION
 
 
+install_requires = [
+    'Django>=1.4',
+    'python-social-auth',
+]
+
+
+try:
+    import importlib
+except ImportError:
+    install_requires.append('importlib')
+
+
 setup(
     name='ksp-login',
     version='0.2.2',
@@ -38,8 +50,5 @@ setup(
     license='LICENSE',
     description='A Django app for both traditional and social authentication',
     long_description=long_description(),
-    install_requires=[
-        'Django>=1.4',
-        'python-social-auth',
-    ],
+    install_requires=install_requires,
 )

@@ -193,7 +193,7 @@ class KspLoginTests(TestCase):
         self.assertEqual(len(user.social_auth.all()), 0)
 
     def test_registration_details_form(self):
-        """Verify that signal-based registration/profile form gathering works.
+        """Verify that forms listed in KSP_LOGIN_PROFILE_FORMS work.
         """
         response = self.social_testing_login()
         # A registration form is displayed to the user.

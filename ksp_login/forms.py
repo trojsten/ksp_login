@@ -6,6 +6,7 @@ from django.utils.translation import string_concat, ugettext_lazy as _
 from social.apps.django_app.utils import setting
 
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
+from ksp_login.utils import import_string
 
 
 class KspUserCreationForm(UserCreationForm):
@@ -153,8 +154,7 @@ class PasswordChangeForm(AuthPasswordChangeForm):
 class BaseUserProfileForm(ModelForm):
     """
     Base class for any additional user info forms. This implements the
-    contract required by the signal-based form gathering mechanism and the
-    views it uses.
+    contract required by the register and settings views.
     """
 
     # Override this attribute if the ForeignKey to User in your model is
@@ -181,3 +181,8 @@ class BaseUserProfileForm(ModelForm):
         if commit:
             instance.save()
         return instance
+
+
+def get_profile_forms():
+    form_names = setting('KSP_LOGIN_PROFILE_FORMS', [])
+    return [import_string(name) for name in form_names]
