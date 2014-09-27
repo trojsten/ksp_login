@@ -31,7 +31,7 @@ except ImportError:
 
 setup(
     name='ksp-login',
-    version='0.2.2',
+    version='0.3.0',
     author='Michal Petrucha',
     author_email='michal.petrucha@ksp.sk',
     url='https://github.com/koniiiik/ksp_login',
