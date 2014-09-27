@@ -5,10 +5,10 @@ from social.pipeline.partial import partial
 
 
 @partial
-def register_user(request, user, *args, **kwargs):
+def register_user(user, *args, **kwargs):
     """
     Pipeline function which redirects new users to the registration view.
     """
-    if request.user.is_authenticated() or user:
+    if user is not None and user.is_authenticated():
         return None
     return redirect('account_register')
