@@ -1,8 +1,11 @@
 from __future__ import unicode_literals
+
 import re
+
 from django.contrib.auth.models import User
 from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
+from django.utils.encoding import force_text
 from social.backends import utils
 
 from ksp_login_tests.utils import IDAttributeCounter
@@ -251,7 +254,7 @@ class KspLoginTests(TestCase):
         response = self.client.get('/account/login/')
 
         parser = IDAttributeCounter()
-        parser.feed(response.content)
+        parser.feed(force_text(response.content))
         for elem_id, count in parser.id_counter.items():
             self.assertEquals(count, 1, "'id' value of '%s' used %d times" % (
                 elem_id, count
