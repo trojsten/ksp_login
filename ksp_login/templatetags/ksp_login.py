@@ -17,5 +17,7 @@ def ksp_login_next(context):
     return next_page
 
 @register.assignment_tag(takes_context=True)
-def ksp_login_auth_form(context):
-    return AuthenticationForm
+def ksp_login_auth_form(context, id_prefix=None):
+    if id_prefix:
+        return AuthenticationForm(auto_id=id_prefix+'_%s')
+    return AuthenticationForm()

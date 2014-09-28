@@ -5,6 +5,8 @@ from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
 from social.backends import utils
 
+from ksp_login_tests.utils import IDAttributeCounter
+
 
 class KspLoginTests(TestCase):
     def create_user(self):
@@ -238,3 +240,19 @@ class KspLoginTests(TestCase):
             expected.encode('utf-8'),
             html=True,
         )
+
+    def test_unique_input_id(self):
+        """Verify that we don't get duplicate IDs for input elements.
+
+        On the login page, the same login form is displayed twice -- once
+        in the main content and once in the hidden modal form. Ensure the
+        IDs don't clash.
+        """
+        response = self.client.get('/account/login/')
+
+        parser = IDAttributeCounter()
+        parser.feed(response.content)
+        for elem_id, count in parser.id_counter.items():
+            self.assertEquals(count, 1, "'id' value of '%s' used %d times" % (
+                elem_id, count
+            ))

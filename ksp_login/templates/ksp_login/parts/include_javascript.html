@@ -7,7 +7,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}ksp_login/js/backend_list.js"></script>
 {% if not user.is_authenticated %}
   <div id="ksp_login_modal_box" style="display: none;">
-    {% ksp_login_auth_form as auth_form %}
+    {% ksp_login_auth_form id_prefix="modal_login" as auth_form %}
     {% include "ksp_login/parts/login_full_contents.html" with form=auth_form %}
   </div>
 {% endif %}
