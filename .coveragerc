@@ -1,0 +1,5 @@
+[run]
+branch = True
+source =
+    ksp_login
+omit = *test*

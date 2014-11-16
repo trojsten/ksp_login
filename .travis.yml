@@ -4,6 +4,7 @@ python:
   - "2.7"
   - "3.2"
   - "3.3"
+  - "3.4"
 env:
   - DJANGO_VERSION='>=1.4,<1.5'
   - DJANGO_VERSION='>=1.5,<1.6'
@@ -11,10 +12,14 @@ env:
 install:
   - pip install "Django${DJANGO_VERSION}"
   - pip install .
-script: cd tests; ./manage.py test ksp_login_tests
+  - pip install coverage coveralls
+script: coverage run ./tests/manage.py test ksp_login_tests
 matrix:
   exclude:
     - python: "3.2"
       env: DJANGO_VERSION='>=1.4,<1.5'
     - python: "3.3"
       env: DJANGO_VERSION='>=1.4,<1.5'
+    - python: "3.4"
+      env: DJANGO_VERSION='>=1.4,<1.5'
+after_success: coveralls

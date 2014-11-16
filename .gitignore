@@ -1,3 +1,5 @@
 *.pyc
 # Vim swapfiles
 .*.sw[po]
+htmlcov
+.coverage
