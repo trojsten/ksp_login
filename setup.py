@@ -1,5 +1,5 @@
 from os.path import join, dirname
-from distutils.core import setup
+from setuptools import setup
 
 
 LONG_DESCRIPTION = """
@@ -31,9 +31,9 @@ except ImportError:
 
 setup(
     name='ksp-login',
-    version='0.3.0',
+    version='0.3.1',
     author='Michal Petrucha',
-    author_email='michal.petrucha@ksp.sk',
+    author_email='michal.petrucha@koniiiik.org',
     url='https://github.com/koniiiik/ksp_login',
     packages=['ksp_login', 'ksp_login.templatetags'],
     package_data={
