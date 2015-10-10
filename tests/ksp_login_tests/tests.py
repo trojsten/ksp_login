@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import re
 
 from django.contrib.auth.models import User
+from django.db import models
 from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
 from django.utils.encoding import force_text
@@ -147,8 +148,12 @@ class KspLoginTests(TestCase):
             html=True,
         )
         # The type of an EmailInput has changed in 1.6, which means we
-        # need to render it manually here.
-        expected = EmailField().widget.render('email', 'b@a.com', {'maxlength': 75, 'id': 'id_email'})
+        # need to render it manually here. Also, EmailField.max_length
+        # changed in 1.8.
+        expected = EmailField().widget.render('email', 'b@a.com', {
+            'maxlength': models.EmailField().max_length,
+            'id': 'id_email'
+        })
         self.assertContains(
             response,
             expected.encode('utf-8'),
