@@ -18,7 +18,7 @@ def long_description():
 
 
 install_requires = [
-    'Django>=1.4',
+    'Django>=1.8',
     'python-social-auth',
 ]
 

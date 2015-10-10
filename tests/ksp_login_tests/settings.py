@@ -20,6 +20,16 @@ INSTALLED_APPS = (
     'ksp_login_tests',
 )
 
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
 ROOT_URLCONF = 'ksp_login_tests.urls'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
