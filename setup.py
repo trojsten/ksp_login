@@ -40,6 +40,7 @@ setup(
         'ksp_login': [
             'templates/ksp_login/*.html',
             'templates/ksp_login/parts/*.html',
+            'locale/*/*/*.[mp]o',
             'static/ksp_login/img/*.svg',
             'static/ksp_login/img/*.png',
             'static/ksp_login/img/*.txt',
