@@ -113,7 +113,8 @@ class KspLoginTests(TestCase):
         page.
         """
         response = self.social_testing_login(follow=False)
-        self.assertRedirects(response, '/account/complete/test1/',
+        self.assertRedirects(response,
+                             'http://testserver/account/complete/test1/',
                              target_status_code=302)
         response = self.client.get('/account/complete/test1/')
         self.assertRedirects(response, '/account/register/')
