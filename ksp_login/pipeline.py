@@ -1,6 +1,4 @@
-from django.utils.importlib import import_module
 from django.shortcuts import redirect
-from social.apps.django_app.utils import setting
 from social.pipeline.partial import partial
 
 
