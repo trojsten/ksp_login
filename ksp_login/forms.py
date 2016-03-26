@@ -2,11 +2,11 @@ from django.contrib.auth.forms import (UserCreationForm,
     PasswordChangeForm as AuthPasswordChangeForm)
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
+from django.utils.module_loading import import_string
 from django.utils.translation import string_concat, ugettext_lazy as _
 from social.apps.django_app.utils import setting
 
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
-from ksp_login.utils import import_string
 
 
 class KspUserCreationForm(UserCreationForm):
