@@ -171,9 +171,11 @@ class KspLoginTests(TestCase):
                                     follow=True)
         # The redirect chain continues through the social:complete view
         # and lands at the LOGIN_URL destination.
-        self.assertEqual(response.redirect_chain,
-                         [('http://testserver/account/complete/test1/', 302),
-                         ('http://testserver/account/', 302)])
+        self.assertIn(tuple(response.redirect_chain),
+                      [(('http://testserver/account/complete/test1/', 302),
+                        ('http://testserver/account/', 302)),
+                       (('/account/complete/test1/', 302),
+                        ('/account/', 302))])
         # The resulting page shows the user logged in and with a social
         # association.
         self.assertIn(b'Logged in as', response.content)
