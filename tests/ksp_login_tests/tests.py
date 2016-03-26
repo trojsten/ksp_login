@@ -264,3 +264,10 @@ class KspLoginTests(TestCase):
             self.assertEquals(count, 1, "'id' value of '%s' used %d times" % (
                 elem_id, count
             ))
+
+    def test_settings_redirect(self):
+        user = self.create_user()
+        self.login()
+
+        response = self.client.get('/account/settings/')
+        self.assertRedirects(response, '/account/', status_code=301)
