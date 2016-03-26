@@ -9,8 +9,10 @@ def ksp_login_next(context):
     request = context['request']
     if 'next' in context:
         next_page = context['next']
-    elif 'next' in request.REQUEST:
-        next_page = request.REQUEST['next']
+    elif 'next' in request.GET:
+        next_page = request.GET['next']
+    elif 'next' in request.POST:
+        next_page = request.POST['next']
     else:
         next_page = request.get_full_path()
 
