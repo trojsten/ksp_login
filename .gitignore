@@ -1,5 +1,12 @@
-*.pyc
+*.py[co]
 # Vim swapfiles
 .*.sw[po]
 htmlcov
 .coverage
+
+/tests/db
+
+# setuptools stuff
+/MANIFEST
+/dist
+/ksp_login.egg-info
