@@ -51,11 +51,11 @@ class KspLoginTests(TestCase):
             response.content,
         )
 
-        self.assertIsNot(match1, None)
-        self.assertIsNot(match2, None)
-        self.assertIsNot(match3, None)
-        self.assertIsNot(match4, None)
-        self.assertIsNot(match5, None)
+        self.assertIsNotNone(match1)
+        self.assertIsNotNone(match2)
+        self.assertIsNotNone(match3)
+        self.assertIsNotNone(match4)
+        self.assertIsNotNone(match5)
 
         self.assertLess(match1.start(), match2.start())
         self.assertLess(match2.start(), match3.start())
@@ -92,11 +92,11 @@ class KspLoginTests(TestCase):
                 response.content,
             )
 
-            self.assertIsNot(match1, None)
-            self.assertIsNot(match2, None)
-            self.assertIsNot(match3, None)
-            self.assertIsNot(match4, None)
-            self.assertIsNot(match5, None)
+            self.assertIsNotNone(match1)
+            self.assertIsNotNone(match2)
+            self.assertIsNotNone(match3)
+            self.assertIsNotNone(match4)
+            self.assertIsNotNone(match5)
 
             self.assertLess(match1.start(), match2.start())
             self.assertLess(match2.start(), match3.start())
