@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import re
 
 from django.contrib.auth.models import User
+from django.core import mail
 from django.db import models
 from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
@@ -274,3 +275,103 @@ class KspLoginTests(TestCase):
 
         response = self.client.get('/account/settings/')
         self.assertRedirects(response, '/account/', status_code=301)
+
+    def test_password_reset(self):
+        """Verify the full password reset workflow.
+        """
+        user = self.create_user()
+
+        # The index page should contain a link to password reset.
+        response = self.client.get('/')
+        self.assertContains(
+            response,
+            '<a href="/account/password-reset/">Forgotten password</a>',
+            html=True,
+        )
+
+        # The initial password reset page displays an email form.
+        response = self.client.get('/account/password-reset/')
+        self.assertContains(
+            response,
+            b'<input id="id_email" maxlength="254" name="email" type="email" />',
+            html=True,
+        )
+
+        # Submit the email address...
+        data = {
+            'email': 'a@b.com',
+        }
+        response = self.client.post('/account/password-reset/', data,
+                                    follow=True)
+        self.assertRedirects(response, '/account/password-reset/done/')
+        # TODO: maybe test the confirmation page, too?
+        self.assertEqual(len(mail.outbox), 1)
+        pwmail = mail.outbox[0]
+        match = re.search(
+            r'^(?P<protocol>http(?:s?))://(?P<domain>[^/]*)(?P<uri>.*)$',
+            pwmail.body,
+            re.MULTILINE,
+        )
+        self.assertIsNotNone(match)
+
+        pw_reset_uri = match.group('uri')
+
+        # If we modify the token, we get an error page.
+        bad_reset_uri = list(pw_reset_uri)
+        bad_reset_uri[-3] = 'a' if bad_reset_uri[-3].isdigit() else '0'
+        bad_reset_uri = ''.join(bad_reset_uri)
+        response = self.client.get(bad_reset_uri)
+        self.assertContains(response, 'Password reset unsuccessful')
+
+        # The correct URI displays a form to set a new password.
+        response = self.client.get(pw_reset_uri)
+        self.assertContains(
+            response,
+            b'<input id="id_new_password1" name="new_password1" type="password" />',
+            html=True,
+        )
+
+        # We can now set a new password.
+        data = {
+            'new_password1': "This one I won't forget!",
+            'new_password2': "This one I won't forget!",
+        }
+        response = self.client.post(pw_reset_uri, data, follow=True)
+        self.assertRedirects(response, '/account/reset/done/')
+        # TODO: maybe test the confirmation page, too?
+
+        # At last, the password has been changed successfully.
+        self.assertFalse(
+            self.client.login(username='koniiiik',
+                              password='secret'),
+        )
+        self.assertTrue(
+            self.client.login(username='koniiiik',
+                              password="This one I won't forget!"),
+        )
+
+    def test_password_reset_works_for_active_without_password(self):
+        user = self.create_user()
+        user.set_unusable_password()
+        user.save()
+
+        data = {
+            'email': 'a@b.com',
+        }
+        response = self.client.post('/account/password-reset/', data,
+                                    follow=True)
+        self.assertRedirects(response, '/account/password-reset/done/')
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_password_reset_does_not_work_for_inactive(self):
+        user = self.create_user()
+        user.is_active = False
+        user.save()
+
+        data = {
+            'email': 'a@b.com',
+        }
+        response = self.client.post('/account/password-reset/', data,
+                                    follow=True)
+        self.assertRedirects(response, '/account/password-reset/done/')
+        self.assertEqual(len(mail.outbox), 0)

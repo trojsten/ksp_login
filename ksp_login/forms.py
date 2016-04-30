@@ -1,5 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (UserCreationForm,
-    PasswordChangeForm as AuthPasswordChangeForm)
+    PasswordChangeForm as AuthPasswordChangeForm,
+    PasswordResetForm as AuthPasswordResetForm)
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
 from django.utils.module_loading import import_string
@@ -149,6 +151,16 @@ class PasswordChangeForm(AuthPasswordChangeForm):
         if commit:
             user.save()
         return user
+
+
+class PasswordResetForm(AuthPasswordResetForm):
+    """
+    Password reset form that does not block users with unusable password.
+    (There's already the is_active flag for that.)
+    """
+    def get_users(self, email):
+        return get_user_model()._default_manager.filter(
+            email__iexact=email, is_active=True)
 
 
 class BaseUserProfileForm(ModelForm):
