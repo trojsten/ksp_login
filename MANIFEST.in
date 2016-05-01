@@ -1,4 +1,4 @@
 include README.rst
 include LICENSE
 include MANIFEST.in
-recursive-include ksp_login *.html *.js *.css *.png *.svg *.mo *.po
+recursive-include ksp_login *.html *.txt *.js *.css *.png *.svg *.mo *.po

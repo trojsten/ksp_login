@@ -45,6 +45,7 @@ setup(
             'static/ksp_login/img/*.txt',
             'static/ksp_login/js/*.js',
             'templates/ksp_login/*.html',
+            'templates/ksp_login/*.txt',
             'templates/ksp_login/parts/*.html',
         ],
     },
