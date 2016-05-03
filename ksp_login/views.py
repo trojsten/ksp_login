@@ -17,8 +17,15 @@ from ksp_login.forms import (KspUserCreationForm, PasswordChangeForm,
 
 
 def login(request):
+    # TODO: Remove this in favor of redirect_authenticated_user once we
+    # drop support for Django<1.10.
     if request.user.is_authenticated():
-        next_page = request.REQUEST.get('next', 'account_settings')
+        # TODO: We shouldn't try to reverse what we get from the user.
+        # Also, call is_safe_url here.
+        next_page = request.GET.get(
+            'next',
+            request.POST.get('next', 'account_settings'),
+        )
         return redirect(next_page)
     return auth_login(request, template_name='ksp_login/login.html',
                       extra_context=login_providers(request))

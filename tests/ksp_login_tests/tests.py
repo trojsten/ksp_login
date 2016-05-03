@@ -375,3 +375,19 @@ class KspLoginTests(TestCase):
                                     follow=True)
         self.assertRedirects(response, '/account/password-reset/done/')
         self.assertEqual(len(mail.outbox), 0)
+
+    def test_login_redirects_when_already_logged_in(self):
+        user = self.create_user()
+        self.login()
+
+        # Without the next parameter, redirects to the settings page.
+        response = self.client.get('/account/login/')
+        self.assertRedirects(response, '/account/')
+
+        # We can pass the next page in a GET argument.
+        response = self.client.get('/account/login/?next=/')
+        self.assertRedirects(response, '/')
+
+        # We can pass the next page in a POST argument.
+        response = self.client.post('/account/login/', {'next': '/'})
+        self.assertRedirects(response, '/')
