@@ -395,7 +395,7 @@ class KspLoginTests(TestCase):
         # The redirect does not try to reverse the user-supplied URL.
         response = self.client.get('/account/login/?next=hello_world')
         # The important thing here is that the redirect does not lead to /.
-        self.assertRedirects(response, 'hello_world',
+        self.assertRedirects(response, '/account/login/hello_world',
                              fetch_redirect_response=False)
 
         # We don't allow redirects to unsafe URLs.
