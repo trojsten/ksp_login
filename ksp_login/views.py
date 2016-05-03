@@ -1,21 +1,25 @@
-from django.shortcuts import render
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, resolve_url
-from django.utils.http import is_safe_url
-from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import (login as auth_login, logout as
-    auth_logout, password_change)
 from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import (
+    login as auth_login, logout as auth_logout, password_change,
+)
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render, resolve_url
+from django.utils.http import is_safe_url
+from django.utils.translation import ugettext_lazy as _
+
 from social.apps.django_app.default.models import UserSocialAuth
 from social.apps.django_app.utils import setting
 from social.apps.django_app.views import disconnect as social_disconnect
+
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
-from ksp_login.forms import (KspUserCreationForm, PasswordChangeForm,
-    UserProfileForm, get_profile_forms)
+from ksp_login.forms import (
+    get_profile_forms, KspUserCreationForm, PasswordChangeForm,
+    UserProfileForm,
+)
 
 
 def login(request):
