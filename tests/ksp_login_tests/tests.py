@@ -391,3 +391,13 @@ class KspLoginTests(TestCase):
         # We can pass the next page in a POST argument.
         response = self.client.post('/account/login/', {'next': '/'})
         self.assertRedirects(response, '/')
+
+        # The redirect does not try to reverse the user-supplied URL.
+        response = self.client.get('/account/login/?next=hello_world')
+        # The important thing here is that the redirect does not lead to /.
+        self.assertRedirects(response, 'hello_world',
+                             fetch_redirect_response=False)
+
+        # We don't allow redirects to unsafe URLs.
+        response = self.client.get('/account/login/?next=http://google.com/')
+        self.assertRedirects(response, '/account/')

@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, resolve_url
+from django.utils.http import is_safe_url
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -20,13 +22,10 @@ def login(request):
     # TODO: Remove this in favor of redirect_authenticated_user once we
     # drop support for Django<1.10.
     if request.user.is_authenticated():
-        # TODO: We shouldn't try to reverse what we get from the user.
-        # Also, call is_safe_url here.
-        next_page = request.GET.get(
-            'next',
-            request.POST.get('next', 'account_settings'),
-        )
-        return redirect(next_page)
+        next_page = request.GET.get('next', request.POST.get('next', ''))
+        if not is_safe_url(url=next_page, host=request.get_host()):
+            next_page = resolve_url(setting('LOGIN_REDIRECT_URL'))
+        return HttpResponseRedirect(next_page)
     return auth_login(request, template_name='ksp_login/login.html',
                       extra_context=login_providers(request))
 
