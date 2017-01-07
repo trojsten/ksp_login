@@ -200,7 +200,7 @@ class KspLoginTests(TestCase):
         # Disassociate the social auth.
         response = self.client.post('/account/disconnect/test1/%d/' % (auth.id,),
                                     follow=True)
-        self.assertRedirects(response, '/account/')
+        self.assertRedirects(response, 'http://testserver/account/')
         self.assertNotContains(response, b'Testing UID #1')
         self.assertContains(response, b"don't have any services associated")
         self.assertEqual(len(user.social_auth.all()), 0)
