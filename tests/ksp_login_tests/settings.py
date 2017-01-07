@@ -15,7 +15,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social.apps.django_app.default',
+    'social_django',
     'ksp_login',
     'ksp_login_tests',
 )
@@ -64,11 +64,11 @@ LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/account/'
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
-    'social.backends.google.GoogleOpenId',
-    'social.backends.github.GithubOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.github.GithubOAuth2',
     'ksp_login.backends.LaunchpadAuth',
-    'social.backends.open_id.OpenIdAuth',
+    'social_core.backends.open_id.OpenIdAuth',
     'django.contrib.auth.backends.ModelBackend',
     'ksp_login_tests.social_backend.DummyTestingAuth1',
 )
@@ -76,14 +76,14 @@ AUTHENTICATION_BACKENDS = (
 AUTHENTICATION_PROVIDERS_BRIEF = 3
 
 SOCIAL_AUTH_PIPELINE = (
-    'social.pipeline.social_auth.social_details',
-    'social.pipeline.social_auth.social_uid',
-    'social.pipeline.social_auth.auth_allowed',
-    'social.pipeline.social_auth.social_user',
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
     'ksp_login.pipeline.register_user',
-    'social.pipeline.social_auth.associate_user',
-    'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
 )
 
 KSP_LOGIN_PROFILE_FORMS = (

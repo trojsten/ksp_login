@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.forms.models import ModelForm
 from django.utils.module_loading import import_string
 from django.utils.translation import string_concat, ugettext_lazy as _
-from social.apps.django_app.utils import setting
+from social_django.utils import setting
 
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 

@@ -35,7 +35,7 @@ urlpatterns = [
             template_name='ksp_login/password_reset_complete.html',
         )),
 
-    url(r'', include('social.apps.django_app.urls', namespace='social')),
+    url(r'', include('social_django.urls', namespace='social')),
     url(r'^settings/', RedirectView.as_view(pattern_name='account_settings',
                                             permanent=True)),
 ]

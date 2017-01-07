@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from social.backends.oauth import BaseOAuth2
+from social_core.backends.oauth import BaseOAuth2
 
 
 class DummyTestingAuth1(BaseOAuth2):

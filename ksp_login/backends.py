@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
-from social.backends.open_id import OpenIdAuth
-from social.exceptions import AuthMissingParameter
+from social_core.backends.open_id import OpenIdAuth
+from social_core.exceptions import AuthMissingParameter
 
 
 class UsernameBasedOpenIdAuth(OpenIdAuth):

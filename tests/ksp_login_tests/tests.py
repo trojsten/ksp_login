@@ -8,7 +8,6 @@ from django.db import models
 from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
 from django.utils.encoding import force_text
-from social.backends import utils
 
 from ksp_login_tests.utils import IDAttributeCounter
 
@@ -65,10 +64,10 @@ class KspLoginTests(TestCase):
 
         with self.settings(AUTHENTICATION_BACKENDS=(
             'ksp_login.backends.LaunchpadAuth',
-            'social.backends.google.GoogleOpenId',
-            'social.backends.github.GithubOAuth2',
-            'social.backends.facebook.FacebookOAuth2',
-            'social.backends.open_id.OpenIdAuth',
+            'social_core.backends.google.GoogleOpenId',
+            'social_core.backends.github.GithubOAuth2',
+            'social_core.backends.facebook.FacebookOAuth2',
+            'social_core.backends.open_id.OpenIdAuth',
             'django.contrib.auth.backends.ModelBackend',
         ), AUTHENTICATION_PROVIDERS_BRIEF=2):
             # This time only Launchpad and Google are in the login box and

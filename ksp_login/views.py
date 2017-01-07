@@ -10,9 +10,9 @@ from django.shortcuts import redirect, render, resolve_url
 from django.utils.http import is_safe_url
 from django.utils.translation import ugettext_lazy as _
 
-from social.apps.django_app.default.models import UserSocialAuth
-from social.apps.django_app.utils import setting
-from social.apps.django_app.views import disconnect as social_disconnect
+from social_django.models import UserSocialAuth
+from social_django.utils import setting
+from social_django.views import disconnect as social_disconnect
 
 from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers

@@ -1,6 +1,6 @@
-from social.utils import module_member
-from social.backends.base import BaseAuth
-from social.apps.django_app.utils import setting
+from social_core.utils import module_member
+from social_core.backends.base import BaseAuth
+from social_django.utils import setting
 
 
 DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF = 3

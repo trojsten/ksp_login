@@ -20,4 +20,4 @@ More features are coming soon (such as user merging etc).
 
 .. _Django: https://djangoproject.com/
 
-.. _python-social-auth: https://github.com/omab/python-social-auth
+.. _python-social-auth: https://github.com/python-social-auth

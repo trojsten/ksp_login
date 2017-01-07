@@ -8,12 +8,12 @@ SOCIAL_AUTH_PARTIAL_PIPELINE_KEY = 'partial_pipeline'
 
 
 def __activate_social_auth_monkeypatch():
-    from social.backends.base import BaseAuth
-    from social.backends.open_id import (OPENID_ID_FIELD, OpenIdAuth)
-    from social.backends.livejournal import LiveJournalOpenId
-    from social.backends.yahoo import YahooOpenId
-    from social.backends.google import GoogleOpenId
-    from social.backends.yandex import YandexOpenId
+    from social_core.backends.base import BaseAuth
+    from social_core.backends.open_id import (OPENID_ID_FIELD, OpenIdAuth)
+    from social_core.backends.livejournal import LiveJournalOpenId
+    from social_core.backends.yahoo import YahooOpenId
+    from social_core.backends.google import GoogleOpenId
+    from social_core.backends.yandex import YandexOpenId
 
     BaseAuth.REQUIRED_FIELD_NAME = None
     BaseAuth.REQUIRED_FIELD_VERBOSE_NAME = None
