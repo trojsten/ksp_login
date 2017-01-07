@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import re
 
+import django
 from django.contrib.auth.models import User
 from django.core import mail
 from django.db import models
@@ -133,9 +134,19 @@ class KspLoginTests(TestCase):
         self.assertRedirects(response, '/account/register/')
         # The registration form is supposed to be filled in with values
         # retrieved from the auth provider.
+        if django.VERSION < (1, 10):
+            expected_username_input = (
+                b'<input id="id_username" maxlength="30" name="username"'
+                b' type="text" value="koniiiik" />'
+            )
+        else:
+            expected_username_input = (
+                b'<input id="id_username" maxlength="150" name="username"'
+                b' type="text" value="koniiiik" required autofocus="" />'
+            )
         self.assertContains(
             response,
-            b'<input id="id_username" maxlength="30" name="username" type="text" value="koniiiik" />',
+            expected_username_input,
             html=True,
         )
         self.assertContains(
@@ -290,11 +301,17 @@ class KspLoginTests(TestCase):
 
         # The initial password reset page displays an email form.
         response = self.client.get('/account/password-reset/')
-        self.assertContains(
-            response,
-            b'<input id="id_email" maxlength="254" name="email" type="email" />',
-            html=True,
-        )
+        if django.VERSION < (1, 10):
+            expected_email_input = (
+                b'<input id="id_email" maxlength="254" name="email"'
+                b' type="email" />'
+            )
+        else:
+            expected_email_input = (
+                b'<input id="id_email" maxlength="254" name="email"'
+                b' type="email" required />'
+            )
+        self.assertContains(response, expected_email_input, html=True)
 
         # Submit the email address...
         data = {
@@ -324,11 +341,17 @@ class KspLoginTests(TestCase):
 
         # The correct URI displays a form to set a new password.
         response = self.client.get(pw_reset_uri)
-        self.assertContains(
-            response,
-            b'<input id="id_new_password1" name="new_password1" type="password" />',
-            html=True,
-        )
+        if django.VERSION < (1, 10):
+            expected_pw_input = (
+                b'<input id="id_new_password1" name="new_password1"'
+                b' type="password" />'
+            )
+        else:
+            expected_pw_input = (
+                b'<input id="id_new_password1" name="new_password1"'
+                b' type="password" required />'
+            )
+        self.assertContains(response, expected_pw_input, html=True)
 
         # We can now set a new password.
         data = {
