@@ -6,7 +6,6 @@ import django
 from django.contrib.auth.models import User
 from django.core import mail
 from django.db import models
-from django.forms.fields import EmailField, IntegerField
 from django.test import TestCase
 from django.utils.encoding import force_text
 
@@ -159,16 +158,9 @@ class KspLoginTests(TestCase):
             b'<input id="id_last_name" maxlength="30" name="last_name" type="text" value="Knuk" />',
             html=True,
         )
-        # The type of an EmailInput has changed in 1.6, which means we
-        # need to render it manually here. Also, EmailField.max_length
-        # changed in 1.8.
-        expected = EmailField().widget.render('email', 'b@a.com', {
-            'maxlength': models.EmailField().max_length,
-            'id': 'id_email'
-        })
         self.assertContains(
             response,
-            expected.encode('utf-8'),
+            b'<input id="id_email" maxlength="254" name="email" type="email" value="b@a.com" />',
             html=True,
         )
         # Submit the registration form...
@@ -229,12 +221,9 @@ class KspLoginTests(TestCase):
             b'<input type="text" name="birthday" id="id_birthday" />',
             html=True,
         )
-        # The type of an NumberInput has changed in 1.6, which means we
-        # need to render it manually here.
-        expected = IntegerField().widget.render('shoe_size', None, {'id': 'id_shoe_size'})
         self.assertContains(
             response,
-            expected.encode('utf-8'),
+            b'<input id="id_shoe_size" name="shoe_size" type="number" />',
             html=True,
         )
         # Submit the registration form...
@@ -256,10 +245,9 @@ class KspLoginTests(TestCase):
             b'<input type="text" value="2014-01-10" name="birthday" id="id_birthday" />',
             html=True,
         )
-        expected = IntegerField().widget.render('shoe_size', 47, {'id': 'id_shoe_size'})
         self.assertContains(
             response,
-            expected.encode('utf-8'),
+            b'<input id="id_shoe_size" name="shoe_size" type="number" value="47" />',
             html=True,
         )
 
