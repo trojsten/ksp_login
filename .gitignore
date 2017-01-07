@@ -9,4 +9,5 @@ htmlcov
 # setuptools stuff
 /MANIFEST
 /dist
+/build
 /ksp_login.egg-info
