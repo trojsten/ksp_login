@@ -138,10 +138,15 @@ class KspLoginTests(TestCase):
                 b'<input id="id_username" maxlength="30" name="username"'
                 b' type="text" value="koniiiik" />'
             )
-        else:
+        elif django.VERSION < (1, 11):
             expected_username_input = (
                 b'<input id="id_username" maxlength="150" name="username"'
                 b' type="text" value="koniiiik" required autofocus="" />'
+            )
+        else:
+            expected_username_input = (
+                b'<input id="id_username" maxlength="150" name="username"'
+                b' type="text" value="koniiiik" required autofocus />'
             )
         self.assertContains(
             response,
