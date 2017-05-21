@@ -4,9 +4,6 @@ __version_info__ = (0, 4, 2)
 from django.utils.translation import ugettext_lazy as _
 
 
-SOCIAL_AUTH_PARTIAL_PIPELINE_KEY = 'partial_pipeline'
-
-
 def __activate_social_auth_monkeypatch():
     from social_core.backends.base import BaseAuth
     from social_core.backends.open_id import (OPENID_ID_FIELD, OpenIdAuth)

@@ -14,12 +14,12 @@ from social_django.models import UserSocialAuth
 from social_django.utils import setting
 from social_django.views import disconnect as social_disconnect
 
-from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
 from ksp_login.context_processors import login_providers
 from ksp_login.forms import (
     get_profile_forms, KspUserCreationForm, PasswordChangeForm,
     UserProfileForm,
 )
+from ksp_login.utils import get_partial_pipeline
 
 
 def login(request):
@@ -79,23 +79,15 @@ def register(request, creation_form=KspUserCreationForm):
     As the name suggests, registers a new user.
 
     Can replace the create_user function in the SOCIAL_AUTH pipeline
-    (through ksp_login.pipeline.register_user, with the corresponding
-    save_status_to_session, of course) to make it possible for the user to
-    pick a username.
+    (through ksp_login.pipeline.register_user) to make it possible for the
+    user to pick a username.
 
     Also presents additional app-specific forms listed in the
     KSP_LOGIN_PROFILE_FORMS setting to the user.
     """
     if request.user.is_authenticated():
         return redirect('account_settings')
-    try:
-        pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
-                                                 SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
-        backend = pipeline_state['backend']
-        pipeline_state = pipeline_state['kwargs']
-        standalone = False
-    except KeyError:
-        standalone = True
+    partial = get_partial_pipeline(request)
 
     form_classes = [creation_form] + get_profile_forms()
 
@@ -107,14 +99,11 @@ def register(request, creation_form=KspUserCreationForm):
             for form in forms[1:]:
                 form.set_user(user)
                 form.save()
-            if standalone:
+            if not partial:
                 return redirect('account_login')
-            pipeline_state['user'] = user.id
-            # This ensures the top-level session dict changes, otherwise
-            # our changes in pipeline_state might not get stored.
-            request.session.setdefault('ksp_login_dummy_key', 0)
-            request.session['ksp_login_dummy_key'] += 1
-            return redirect('social:complete', backend=backend)
+            partial.kwargs['user'] = user.id
+            partial.save()
+            return redirect('social:complete', backend=partial.backend)
     else:
         forms = [form(request=request) for form in form_classes]
 

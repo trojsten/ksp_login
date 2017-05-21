@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from django.forms.models import ModelForm
 from django.utils.module_loading import import_string
 from django.utils.translation import string_concat, ugettext_lazy as _
+
 from social_django.utils import setting
 
-from ksp_login import SOCIAL_AUTH_PARTIAL_PIPELINE_KEY
+from ksp_login.utils import get_partial_pipeline
 
 
 class KspUserCreationForm(UserCreationForm):
@@ -31,16 +32,11 @@ class KspUserCreationForm(UserCreationForm):
             del kwargs['request']
         except KeyError:
             raise TypeError("Argument 'request' missing.")
-        try:
-            pipeline_state = request.session[setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY',
-                                                     SOCIAL_AUTH_PARTIAL_PIPELINE_KEY)]
-            pipeline_state = pipeline_state['kwargs']
-            self.password_required = False
-        except KeyError:
-            self.password_required = True
-            pipeline_state = None
+        partial = get_partial_pipeline(request)
         if not args and 'initial' not in kwargs:
-            kwargs['initial'] = self.get_initial_from_pipeline(pipeline_state)
+            kwargs['initial'] = self.get_initial_from_pipeline(partial)
+        # In a partial social pipeline, passwords are not required.
+        self.password_required = not partial
 
         super(KspUserCreationForm, self).__init__(*args, **kwargs)
 
@@ -64,10 +60,10 @@ class KspUserCreationForm(UserCreationForm):
         social_auth pipeline state.
         """
         return None if not pipeline_state else {
-            'username': pipeline_state['details']['username'],
-            'first_name': pipeline_state['details']['first_name'],
-            'last_name': pipeline_state['details']['last_name'],
-            'email': pipeline_state['details']['email'],
+            'username': pipeline_state.kwargs['details']['username'],
+            'first_name': pipeline_state.kwargs['details']['first_name'],
+            'last_name': pipeline_state.kwargs['details']['last_name'],
+            'email': pipeline_state.kwargs['details']['email'],
         }
 
     def clean_password2(self):
