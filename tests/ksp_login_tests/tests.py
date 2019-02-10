@@ -1,14 +1,10 @@
 from __future__ import unicode_literals
 
 import re
-
-import django
 from django.contrib.auth.models import User
 from django.core import mail
-from django.db import models
 from django.test import TestCase
 from django.utils.encoding import force_text
-
 from ksp_login_tests.utils import IDAttributeCounter
 
 
@@ -63,12 +59,12 @@ class KspLoginTests(TestCase):
         self.assertLess(match4.start(), match5.start())
 
         with self.settings(AUTHENTICATION_BACKENDS=(
-            'ksp_login.backends.LaunchpadAuth',
-            'social_core.backends.google.GoogleOpenId',
-            'social_core.backends.github.GithubOAuth2',
-            'social_core.backends.facebook.FacebookOAuth2',
-            'social_core.backends.open_id.OpenIdAuth',
-            'django.contrib.auth.backends.ModelBackend',
+                'ksp_login.backends.LaunchpadAuth',
+                'social_core.backends.google.GoogleOpenId',
+                'social_core.backends.github.GithubOAuth2',
+                'social_core.backends.facebook.FacebookOAuth2',
+                'social_core.backends.open_id.OpenIdAuth',
+                'django.contrib.auth.backends.ModelBackend',
         ), AUTHENTICATION_PROVIDERS_BRIEF=2):
             # This time only Launchpad and Google are in the login box and
             # others appear only below.
@@ -133,39 +129,27 @@ class KspLoginTests(TestCase):
         self.assertRedirects(response, '/account/register/')
         # The registration form is supposed to be filled in with values
         # retrieved from the auth provider.
-        if django.VERSION < (1, 10):
-            expected_username_input = (
-                b'<input id="id_username" maxlength="30" name="username"'
-                b' type="text" value="koniiiik" />'
-            )
-        elif django.VERSION < (1, 11):
-            expected_username_input = (
-                b'<input id="id_username" maxlength="150" name="username"'
-                b' type="text" value="koniiiik" required autofocus="" />'
-            )
-        else:
-            expected_username_input = (
-                b'<input id="id_username" maxlength="150" name="username"'
-                b' type="text" value="koniiiik" required autofocus />'
-            )
         self.assertContains(
             response,
-            expected_username_input,
+            '<input id="id_username" maxlength="150" name="username" type="text" '
+            'value="koniiiik" required autofocus />',
             html=True,
         )
         self.assertContains(
             response,
-            b'<input id="id_first_name" maxlength="30" name="first_name" type="text" value="Colleague" />',
+            '<input id="id_first_name" maxlength="30" name="first_name" type="text" value="Colleague" />',
+            html=True,
+        )
+
+        self.assertContains(
+            response,
+            '<input id="id_last_name" maxlength="{}" name="last_name" type="text" value="Knuk" />'.format(
+                User._meta.get_field('last_name').max_length),
             html=True,
         )
         self.assertContains(
             response,
-            b'<input id="id_last_name" maxlength="30" name="last_name" type="text" value="Knuk" />',
-            html=True,
-        )
-        self.assertContains(
-            response,
-            b'<input id="id_email" maxlength="254" name="email" type="email" value="b@a.com" />',
+            '<input id="id_email" maxlength="254" name="email" type="email" value="b@a.com" />',
             html=True,
         )
         # Submit the registration form...
@@ -223,12 +207,12 @@ class KspLoginTests(TestCase):
         # UserProfileForm defined in this testing app.
         self.assertContains(
             response,
-            b'<input type="text" name="birthday" id="id_birthday" />',
+            '<input type="text" name="birthday" id="id_birthday" />',
             html=True,
         )
         self.assertContains(
             response,
-            b'<input id="id_shoe_size" name="shoe_size" type="number" />',
+            '<input id="id_shoe_size" name="shoe_size" type="number" />',
             html=True,
         )
         # Submit the registration form...
@@ -247,12 +231,12 @@ class KspLoginTests(TestCase):
         response = self.client.get('/account/')
         self.assertContains(
             response,
-            b'<input type="text" value="2014-01-10" name="birthday" id="id_birthday" />',
+            '<input type="text" value="2014-01-10" name="birthday" id="id_birthday" />',
             html=True,
         )
         self.assertContains(
             response,
-            b'<input id="id_shoe_size" name="shoe_size" type="number" value="47" />',
+            '<input id="id_shoe_size" name="shoe_size" type="number" value="47" />',
             html=True,
         )
 
@@ -294,16 +278,9 @@ class KspLoginTests(TestCase):
 
         # The initial password reset page displays an email form.
         response = self.client.get('/account/password-reset/')
-        if django.VERSION < (1, 10):
-            expected_email_input = (
-                b'<input id="id_email" maxlength="254" name="email"'
-                b' type="email" />'
-            )
-        else:
-            expected_email_input = (
-                b'<input id="id_email" maxlength="254" name="email"'
-                b' type="email" required />'
-            )
+
+        expected_email_input = '<input type="email" name="email" maxlength="254" required id="id_email"/>'
+
         self.assertContains(response, expected_email_input, html=True)
 
         # Submit the email address...
@@ -333,19 +310,11 @@ class KspLoginTests(TestCase):
         self.assertContains(response, 'Password reset unsuccessful')
 
         # The correct URI displays a form to set a new password.
-        response = self.client.get(pw_reset_uri)
-        if django.VERSION < (1, 10):
-            expected_pw_input = (
-                b'<input id="id_new_password1" name="new_password1"'
-                b' type="password" />'
-            )
-        else:
-            expected_pw_input = (
-                b'<input id="id_new_password1" name="new_password1"'
-                b' type="password" required />'
-            )
+        response = self.client.get(pw_reset_uri, follow=True)
+        expected_pw_input = '<input id="id_new_password1" name="new_password1" type="password" required />'
         self.assertContains(response, expected_pw_input, html=True)
 
+        pw_reset_uri, code = response.redirect_chain[-1]
         # We can now set a new password.
         data = {
             'new_password1': "This one I won't forget!",

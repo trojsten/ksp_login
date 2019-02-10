@@ -1,15 +1,14 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import (UserCreationForm,
-    PasswordChangeForm as AuthPasswordChangeForm,
-    PasswordResetForm as AuthPasswordResetForm)
+from django.contrib.auth.forms import (PasswordChangeForm as AuthPasswordChangeForm,
+                                       PasswordResetForm as AuthPasswordResetForm, UserCreationForm)
 from django.contrib.auth.models import User
 from django.forms.models import ModelForm
 from django.utils.module_loading import import_string
-from django.utils.translation import string_concat, ugettext_lazy as _
-
-from social_django.utils import setting
+from django.utils.text import format_lazy
+from django.utils.translation import ugettext_lazy as _
 
 from ksp_login.utils import get_partial_pipeline
+from .utils import setting
 
 
 class KspUserCreationForm(UserCreationForm):
@@ -48,7 +47,7 @@ class KspUserCreationForm(UserCreationForm):
         if not self.password_required:
             self.fields['password1'].required = False
             self.fields['password2'].required = False
-            self.fields['password1'].help_text = string_concat(_(
+            self.fields['password1'].help_text = format_lazy('{}{}', _(
                 "Since you're logging in using an external provider, "
                 "this field is optional; however, by supplying it, you "
                 "will be able to log in using a password. "
@@ -112,6 +111,7 @@ class PasswordChangeForm(AuthPasswordChangeForm):
     A form that lets a user change or optionally remove their password
     after entering their current password.
     """
+
     def __init__(self, password_required=True, *args, **kwargs):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         self.password_required = password_required
@@ -154,6 +154,7 @@ class PasswordResetForm(AuthPasswordResetForm):
     Password reset form that does not block users with unusable password.
     (There's already the is_active flag for that.)
     """
+
     def get_users(self, email):
         return get_user_model()._default_manager.filter(
             email__iexact=email, is_active=True)
@@ -175,7 +176,8 @@ class BaseUserProfileForm(ModelForm):
         self.user = user
         if user is not None:
             inst_kw = {self.USER_MODEL_FIELD: user}
-            instance, created = self._meta.model.objects.get_or_create(**inst_kw)
+            instance, created = self._meta.model.objects.get_or_create(
+                **inst_kw)
             kwargs['instance'] = instance
         super(BaseUserProfileForm, self).__init__(*args, **kwargs)
 
