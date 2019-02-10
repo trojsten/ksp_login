@@ -18,9 +18,9 @@ def long_description():
 
 
 install_requires = [
-    'Django>=1.8',
-    'social-auth-core>=1.0',
-    'social-auth-app-django>=1.0',
+    'Django>=1.11',
+    'social-auth-core>=3.0',
+    'social-auth-app-django>=3.1',
 ]
 
 
@@ -57,9 +57,9 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Django',
-        'Framework :: Django :: 1.8',
-        'Framework :: Django :: 1.10',
         'Framework :: Django :: 1.11',
+        'Framework :: Django :: 2.0',
+        'Framework :: Django :: 2.1',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2',

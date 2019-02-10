@@ -2,16 +2,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import (
-    login as auth_login, logout as auth_logout, password_change,
+    LoginView, LogoutView, PasswordChangeView,
 )
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render, resolve_url
-from django.utils.http import is_safe_url
+from django.urls import reverse
+from django.shortcuts import redirect, render
 from django.utils.translation import ugettext_lazy as _
 
 from social_django.models import UserSocialAuth
-from social_django.utils import setting
 from social_django.views import disconnect as social_disconnect
 
 from ksp_login.context_processors import login_providers
@@ -23,19 +20,14 @@ from ksp_login.utils import get_partial_pipeline
 
 
 def login(request):
-    # TODO: Remove this in favor of redirect_authenticated_user once we
-    # drop support for Django<1.10.
-    if request.user.is_authenticated():
-        next_page = request.GET.get('next', request.POST.get('next', ''))
-        if not is_safe_url(url=next_page, host=request.get_host()):
-            next_page = resolve_url(setting('LOGIN_REDIRECT_URL'))
-        return HttpResponseRedirect(next_page)
-    return auth_login(request, template_name='ksp_login/login.html',
-                      extra_context=login_providers(request))
+    return LoginView.as_view(
+        redirect_authenticated_user=True,
+        template_name='ksp_login/login.html',
+        extra_context=login_providers(request))(request)
 
 
 def logout(request):
-    response = auth_logout(request, next_page='/')
+    response = LogoutView.as_view(next_page='/')(request)
     messages.success(request, _("Logout successful"))
     return response
 
@@ -68,10 +60,10 @@ def password(request):
             return PasswordChangeForm(not has_assoc, *args, **kwargs)
     else:
         form = SetPasswordForm
-    return password_change(request,
-                           post_change_redirect=reverse('account_settings'),
-                           password_change_form=form,
-                           template_name='ksp_login/password.html')
+    return PasswordChangeView.as_view(
+        post_change_redirect=reverse('account_settings'),
+        password_change_form=form,
+        template_name='ksp_login/password.html')(request)
 
 
 def register(request, creation_form=KspUserCreationForm):
@@ -133,7 +125,8 @@ def settings(request, settings_form=UserProfileForm):
     else:
         forms = [form(user=request.user) for form in form_classes]
 
-    return render(request, 'ksp_login/settings.html', {
-        'account_associations': UserSocialAuth.get_social_auth_for_user(request.user),
-        'forms': forms,
-    })
+    return render(request, 'ksp_login/settings.html', dict(
+        account_associations=UserSocialAuth.get_social_auth_for_user(
+            request.user),
+        forms=forms,
+    ))

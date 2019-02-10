@@ -1,6 +1,6 @@
 from social_core.utils import module_member
 from social_core.backends.base import BaseAuth
-from social_django.utils import setting
+from social_django.utils import setting_name
 
 
 DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF = 3
@@ -25,11 +25,13 @@ def get_login_providers(request, short=False):
             'required_field_verbose': klass.REQUIRED_FIELD_VERBOSE_NAME,
         }
 
-    backends = (module_member(auth_backend) for auth_backend in setting('AUTHENTICATION_BACKENDS'))
-    providers = [extract_backend_data(backend) for backend in backends if issubclass(backend, BaseAuth)]
+    backends = (module_member(auth_backend)
+                for auth_backend in setting_name('AUTHENTICATION_BACKENDS'))
+    providers = [extract_backend_data(
+        backend) for backend in backends if issubclass(backend, BaseAuth)]
     if short:
-        return providers[:setting('AUTHENTICATION_PROVIDERS_BRIEF',
-                                  DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF)]
+        return providers[:setting_name('AUTHENTICATION_PROVIDERS_BRIEF',
+                                       DEFAULT_AUTHENTICATION_PROVIDERS_BRIEF)]
     return providers
 
 
