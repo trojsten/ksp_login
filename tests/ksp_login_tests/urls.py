@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
 
-from django.shortcuts import render
 from django.conf.urls import include, url
-from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import render
 
 
 def hello_world(request):
