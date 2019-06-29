@@ -1,4 +1,4 @@
-__version__ = '0.6.0'
+__version__ = '0.6.1'
 __version_info__ = tuple(map(int, __version__.split('.')))
 
 from django.utils.translation import ugettext_lazy as _
