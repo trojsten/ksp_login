@@ -1,5 +1,5 @@
 __version__ = '0.6.0'
-__version_info__ = __version__.split('.')
+__version_info__ = tuple(map(int, __version__.split('.')))
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -28,5 +28,6 @@ def __activate_social_auth_monkeypatch():
     YahooOpenId.REQUIRED_FIELD_VERBOSE_NAME = None
     YandexOpenId.REQUIRED_FIELD_NAME = None
     YandexOpenId.REQUIRED_FIELD_VERBOSE_NAME = None
+
 
 __activate_social_auth_monkeypatch()
