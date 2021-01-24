@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ksp-login"
+version = "0.6.2"
+description = "KSP Login is an app for easy authentication management with support for"
+authors = ["Michal Petrucha <michal.petrucha@koniiiik.org>"]
+license = "BSD-4-Clause"
+
+[tool.poetry.dependencies]
+python = "^3.5"
+django = ">=1.11"
+social-auth-core = ">=3.0"
+social-auth-app-django = ">=3.1"
+
+[tool.poetry.dev-dependencies]
+bumpversion = "^0.6.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
